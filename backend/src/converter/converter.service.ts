@@ -39,7 +39,7 @@ export class ConverterService {
 
       let stderr: string = '';
 
-      gcv.stderr.on('data', (data) => {
+      gcv.stderr.on('data', (data: Buffer) => {
         stderr += data.toString();
       });
 
