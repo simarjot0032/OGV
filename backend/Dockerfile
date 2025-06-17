@@ -16,8 +16,7 @@ RUN mkdir -p /cli && \
     chmod -R +x /cli/brlcad-7.40.2
 
 
-RUN export PATH="/cli/brlcad-7.40.2/bin:$PATH" && yarn start:prod
-
+RUN export PATH="/cli/brlcad-7.40.2/bin:$PATH" 
 
 RUN yarn build
 
