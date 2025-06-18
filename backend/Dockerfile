@@ -14,7 +14,8 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Download BRL-CAD, extract it, and set proper executable permissions
-RUN curl -L https://github.com/BRL-CAD/brlcad/releases/download/rel-7-40-2/BRL-CAD_7.40.2_Linux_x86_64.tar.bz2 -o /cli/brlcad.tar.bz2 && \
+RUN mkdir -p /cli && \
+    curl -L https://github.com/BRL-CAD/brlcad/releases/download/rel-7-40-2/BRL-CAD_7.40.2_Linux_x86_64.tar.bz2 -o /cli/brlcad.tar.bz2 && \
     tar -xvjf /cli/brlcad.tar.bz2 -C /cli && \
     chmod -R +x /cli/brlcad-7.40.2
 
@@ -24,8 +25,6 @@ ENV PATH="/cli/brlcad-7.40.2_Linux_x86_64/bin:$PATH"
 # Run the build command for the Node.js application
 RUN yarn build
 
-# Expose port 3000 to be accessed from the host
 EXPOSE 3000
 
 # Start the Node.js application in production mode
-CMD ["yarn", "start:prod"]
