@@ -53,7 +53,7 @@ const ConverterPage = () => {
       toast.error("Invalid output format");
       return;
     }
-    const APIURL = process.env.NEXT_PUBLIC_BACKEND_URL;
+    const APIURL = process.env.NEXT_APP_BACKEND_URL;
     if (!APIURL) {
       console.log(APIURL, process.env);
       toast.error("Try again later");
