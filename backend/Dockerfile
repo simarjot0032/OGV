@@ -21,11 +21,11 @@ RUN mkdir -p /cli && \
     tar -xvjf /cli/brlcad.tar.bz2 -C /cli && \
     ls -l /cli && \
     chmod -R +x /cli/BRL-CAD_7.40.2_Linux_x86_64 && \
-    ls -l /cli/BRL-CAD_7.40.2_Linux_x86_64
+    ls -l /cli/ 
 
 # Set the PATH for BRL-CAD binaries
-ENV PATH="/cli/brlcad/bin:$PATH"
-RUN echo 'export PATH="/cli/brlcad/bin:$PATH"'
+ENV PATH="/cli/BRL-CAD_7.40.2_Linux_x86_64/bin:$PATH"
+RUN echo 'export PATH="/cli/BRL-CAD_7.40.2_Linux_x86_64/bin:$PATH"'
 
 # Run the build command for the Node.js application
 RUN yarn build
