@@ -2,7 +2,7 @@
 import React, { useRef, useState } from "react";
 import "../styles/converter.scss";
 import { MdUploadFile } from "react-icons/md";
-import { InputFormats, OutputFormats } from "../constants/formats";
+import { InputFormats, MaxFileSize, OutputFormats } from "../constants/formats";
 import { toast, ToastContainer } from "react-toastify";
 
 const ConverterPage = () => {
@@ -25,6 +25,14 @@ const ConverterPage = () => {
   };
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+    if (file.size > MaxFileSize) {
+      toast.error("File size exceeds limit");
+      setUploadedFiles(undefined);
+      return;
+    }
     if (file) {
       setUploadedFiles(file.name);
       const fileName: string = file.name;
