@@ -55,7 +55,6 @@ const ConverterPage = () => {
     }
     const APIURL = process.env.NEXT_APP_BACKEND_URL;
     if (!APIURL) {
-      console.log(APIURL, process.env);
       toast.error("Try again later");
       return;
     }
