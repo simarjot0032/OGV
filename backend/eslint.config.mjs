@@ -34,6 +34,8 @@ export default tseslint.config(
         {
           singleQuote: true,
           endOfLine: 'auto',
+          tabWidth: 2,
+          useTabs: false,
         },
       ],
     },
