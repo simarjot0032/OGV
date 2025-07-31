@@ -33,4 +33,4 @@ RUN npx prisma generate
 RUN yarn build
 
 EXPOSE 3000
-CMD ["sh", "-c", "npx prisma migrate deploy --skip-seed && yarn start:prod"]
+CMD ["sh", "-c", "npx prisma migrate deploy && yarn start:prod"]
