@@ -28,6 +28,8 @@ RUN mkdir -p ./uploads/upload-api/raw \
 
 RUN chmod -R 755 ./uploads
 
+RUN npx prisma generate
+
 RUN yarn build
 
 EXPOSE 3000
