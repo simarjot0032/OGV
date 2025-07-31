@@ -6,6 +6,7 @@ import { InputFormats, ValidImageFormats } from 'src/constants';
 import { MIME_Types, ValidImageMimeTypes } from 'src/constants/ValidMIME';
 import cloudinary from './config/cloudinary.config';
 import { ConverterService } from 'src/converter/converter.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import * as fs from 'fs';
 import * as path from 'path';
 import { spawn } from 'child_process';
@@ -15,7 +16,10 @@ import { FileURL } from 'src/types/FileURL';
 
 @Injectable()
 export class UploadService {
-  constructor(private readonly converterService: ConverterService) {}
+  constructor(
+    private readonly converterService: ConverterService,
+    private readonly prisma: PrismaService
+  ) {}
 
   async convertFileToG(
     file: Express.Multer.File
@@ -382,5 +386,116 @@ export class UploadService {
       URL: fileURL,
       response: response,
     };
+  }
+
+  async saveUploadToDatabase(uploadData: {
+    thumbnailUrl: string;
+    title: string;
+    description: string;
+    category: string;
+    license: string;
+    expiresIn: number;
+    originalFileName: string;
+    originalFileUrl: string;
+    originalFileFormat: string;
+    originalFileSize: number;
+    convertedFileUrl: string;
+    userIP: string;
+  }) {
+    try {
+      const savedUpload = await this.prisma.createUpload(uploadData);
+      return {
+        success: true,
+        uploadId: savedUpload.id,
+        data: savedUpload,
+      };
+    } catch (error) {
+      console.error('Failed to save upload to database:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Database save failed',
+      };
+    }
+  }
+
+  async getAllUploads() {
+    try {
+      const uploads = await this.prisma.getAllUploads();
+      return {
+        success: true,
+        data: uploads,
+        count: uploads.length,
+      };
+    } catch (error) {
+      console.error('Failed to get uploads from database:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to retrieve uploads',
+      };
+    }
+  }
+
+  async getUploadById(id: string) {
+    try {
+      const upload = await this.prisma.getUploadById(id);
+      if (!upload) {
+        return {
+          success: false,
+          error: 'Upload not found',
+        };
+      }
+      return {
+        success: true,
+        data: upload,
+      };
+    } catch (error) {
+      console.error('Failed to get upload by ID:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to retrieve upload',
+      };
+    }
+  }
+
+  async cleanupLocalFiles() {
+    try {
+      const convertedDir = StorageConfig.CONVERTED_TO_G_PATH;
+      if (fs.existsSync(convertedDir)) {
+        const files = fs.readdirSync(convertedDir);
+        for (const file of files) {
+          const filePath = path.join(convertedDir, file);
+          if (fs.statSync(filePath).isFile()) {
+            await fs.promises.unlink(filePath);
+            console.log(`Deleted converted file: ${filePath}`);
+          }
+        }
+      }
+
+      const thumbnailDir = StorageConfig.THUMBNAIL_PATH;
+      if (fs.existsSync(thumbnailDir)) {
+        const files = fs.readdirSync(thumbnailDir);
+        for (const file of files) {
+          const filePath = path.join(thumbnailDir, file);
+          if (fs.statSync(filePath).isFile()) {
+            await fs.promises.unlink(filePath);
+            console.log(`Deleted thumbnail file: ${filePath}`);
+          }
+        }
+      }
+
+      const rawDir = StorageConfig.RAW_FILES_PATH;
+      if (fs.existsSync(rawDir)) {
+        const files = fs.readdirSync(rawDir);
+        for (const file of files) {
+          const filePath = path.join(rawDir, file);
+          if (fs.statSync(filePath).isFile()) {
+            await fs.promises.unlink(filePath);
+            console.log(`Deleted raw file: ${filePath}`);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Failed to cleanup local files:', error);
+    }
   }
 }

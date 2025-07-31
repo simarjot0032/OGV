@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Post,
+  Get,
+  Param,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -12,16 +14,58 @@ import { UploadService } from './upload.service';
 import { UploadRequestDto } from './dto/UploadRequest.dto';
 import { multerConfig } from './config/multer.config';
 import { ThrottlerGuard } from '@nestjs/throttler';
-import { ConverterService } from 'src/converter/converter.service';
 import { Request } from 'express';
 import { FileURL } from 'src/types/FileURL';
 
 @Controller('upload')
 export class UploadController {
-  constructor(
-    private readonly uploadService: UploadService,
-    private readonly converterService: ConverterService
-  ) {}
+  constructor(private readonly uploadService: UploadService) {}
+
+  @Get()
+  async getAllUploads() {
+    return await this.uploadService.getAllUploads();
+  }
+
+  @Get(':id')
+  async getUploadById(@Param('id') id: string) {
+    return await this.uploadService.getUploadById(id);
+  }
+
+  private async cleanupUploadedFiles(fileURL: FileURL) {
+    try {
+      if (fileURL.convertedModelURL) {
+        await this.uploadService.deleteFromCloudinary(
+          this.extractPublicId(fileURL.convertedModelURL),
+          'convertedToG',
+          'raw'
+        );
+      }
+      if (fileURL.rawModelURL) {
+        await this.uploadService.deleteFromCloudinary(
+          this.extractPublicId(fileURL.rawModelURL),
+          'rawModels',
+          'raw'
+        );
+      }
+      if (fileURL.thumbnailImageURL) {
+        await this.uploadService.deleteFromCloudinary(
+          this.extractPublicId(fileURL.thumbnailImageURL),
+          'thumbnail',
+          'image'
+        );
+      }
+
+      await this.uploadService.cleanupLocalFiles();
+    } catch (error) {
+      console.error('Failed to cleanup uploaded files:', error);
+    }
+  }
+
+  private extractPublicId(url: string): string {
+    const parts = url.split('/');
+    const filename = parts[parts.length - 1];
+    return filename.split('.')[0];
+  }
 
   @Post('model')
   @UseGuards(ThrottlerGuard)
@@ -31,6 +75,7 @@ export class UploadController {
     @Body() body: Omit<UploadRequestDto, 'file' | 'thumbnailImage'>,
     @Req() req: Request
   ) {
+    const fileFormat = files[0].originalname.split('.').pop();
     const file = files.find((f) => f.fieldname === 'file');
     const thumbnailImage = files.find((f) => f.fieldname === 'thumbnailImage');
 
@@ -69,6 +114,64 @@ export class UploadController {
     }
 
     const result = await this.uploadService.processUploadWithCleanup(file, thumbnailImage, fileURL);
-    return result;
+
+    if (
+      'URL' in result &&
+      result.URL &&
+      result.URL.convertedModelURL &&
+      result.URL.rawModelURL &&
+      result.URL.thumbnailImageURL &&
+      fileFormat
+    ) {
+      const uploadData = {
+        thumbnailUrl: result.URL.thumbnailImageURL,
+        title: request.title,
+        description: request.description,
+        category: request.category,
+        license: request.license,
+        expiresIn: parseInt(request.expiresIn.toString(), 10),
+        originalFileName: file.originalname,
+        originalFileUrl: result.URL.rawModelURL,
+        originalFileFormat: fileFormat,
+        originalFileSize: parseInt(file.size.toString(), 10),
+        convertedFileUrl: result.URL.convertedModelURL,
+        userIP: request.userIP,
+        status: 'active',
+      };
+
+      try {
+        const saveResult = await this.uploadService.saveUploadToDatabase(uploadData);
+        if (saveResult.success) {
+          return {
+            success: true,
+            uploadId: saveResult.uploadId,
+            data: saveResult.data,
+          };
+        } else {
+          await this.cleanupUploadedFiles(result.URL);
+          return {
+            success: false,
+            error: 'Upload successful but failed to save to database',
+            databaseError: saveResult.error,
+          };
+        }
+      } catch (saveError) {
+        console.error('Database save error:', saveError);
+        await this.cleanupUploadedFiles(result.URL);
+        return {
+          success: false,
+          error: 'Database error occurred',
+          details: saveError instanceof Error ? saveError.message : 'Unknown database error',
+        };
+      }
+    } else {
+      if ('URL' in result && result.URL) {
+        await this.cleanupUploadedFiles(result.URL);
+      }
+      return {
+        success: false,
+        error: 'Failed to process upload',
+      };
+    }
   }
 }

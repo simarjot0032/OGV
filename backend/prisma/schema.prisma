@@ -27,5 +27,6 @@ model UploadModel{
   originalFileUrl String
   originalFileFormat String
   originalFileSize Int
+  convertedFileUrl String
   userIP String
 }
