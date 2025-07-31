@@ -1,0 +1,23 @@
+@use '@/styles/global.scss' as *;
+
+.primary-button {
+  & {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: $primary-color;
+    color: $surface-color;
+    border: none;
+    border-radius: $border-radius;
+    padding: 2px 16px;
+    cursor: pointer;
+  }
+  &-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-accent-color;
+    margin: 0;
+    text-align: center;
+  }
+}

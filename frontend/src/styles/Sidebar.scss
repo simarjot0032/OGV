@@ -1,0 +1,64 @@
+@use './Variables' as *;
+
+.sidebar {
+  &-container-closed,
+  &-large {
+    display: none;
+  }
+  &-container-open {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    padding: 16px;
+    background-color: $surface-color;
+    border-right: 1px solid $border-color;
+    position: fixed;
+    left: 0;
+    z-index: 1000;
+  }
+  &-links {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  &-link {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px;
+    gap: 8px;
+    text-decoration: none;
+    color: $text-color;
+    font-size: 18px;
+    transition: all 0.3s linear;
+  }
+  &-link:hover {
+    background-color: $secondary-color;
+    border-radius: 50px;
+  }
+}
+
+@media (min-width: $breakpoint-small) {
+  .sidebar-large {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    padding: 16px;
+    background-color: $surface-color;
+    border-right: 1px solid $border-color;
+    position: fixed;
+    left: 0;
+    z-index: 1000;
+    max-width: $sidebar-width-small;
+  }
+}
+@media screen and (min-width: $breakpoint-medium) {
+  .sidebar-large {
+    max-width: $sidebar-width-medium;
+  }
+}
+@media screen and (min-width: $breakpoint-large) {
+  .sidebar-large {
+    max-width: $sidebar-width-large;
+  }
+}

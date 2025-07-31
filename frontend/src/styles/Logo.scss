@@ -1,0 +1,26 @@
+@use '@/styles/global.scss' as *;
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  cursor: pointer;
+}
+.logo-heading {
+  font-size: 2rem;
+}
+.logo-image {
+  position: absolute;
+  bottom: 0;
+  left: 100%;
+  width: 35px;
+  height: 35px;
+}
+@media (min-width: $breakpoint-small) {
+  .logo-heading {
+    font-size: 2.5rem;
+  }
+}

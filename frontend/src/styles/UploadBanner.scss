@@ -1,0 +1,25 @@
+@use '@/styles/global.scss' as *;
+
+.upload-banner {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  background-color: $surface-color;
+  padding: 16px;
+  border-bottom: 1px solid $border-color;
+}
+.button-container {
+  display: flex;
+  gap: 10px;
+}
+.preview-button {
+  &:hover {
+    .svg-icon {
+      path {
+        fill: $surface-color;
+      }
+    }
+  }
+}

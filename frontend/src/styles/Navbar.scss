@@ -1,0 +1,29 @@
+@use './Variables' as *;
+
+.navbar-container {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid $border-color;
+  background-color: $surface-color;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.hamburger-icon,
+.cross-icon {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+@media (min-width: 768px) {
+  .navbar-container {
+    padding-left: 2rem;
+  }
+  .hamburger-icon {
+    display: none;
+  }
+}
