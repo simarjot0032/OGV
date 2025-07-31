@@ -13,7 +13,7 @@ export class StorageService implements OnModuleInit {
       StorageConfig.UPLOAD_BASE_PATH,
       StorageConfig.UPLOAD_API_PATH,
       StorageConfig.RAW_FILES_PATH,
-      StorageConfig.CONVERTED_TO_G_PATH,
+      StorageConfig.CONVERTED_TO_OBJ_PATH,
       StorageConfig.THUMBNAIL_PATH,
       StorageConfig.CONVERSION_API_PATH,
       StorageConfig.CONVERTER_INPUT_PATH,

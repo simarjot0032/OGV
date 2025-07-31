@@ -4,7 +4,8 @@ export const StorageConfig = {
   // Upload API paths
   UPLOAD_API_PATH: process.env.UPLOAD_API_PATH || './uploads/upload-api',
   RAW_FILES_PATH: process.env.RAW_FILES_PATH || './uploads/upload-api/raw',
-  CONVERTED_TO_G_PATH: process.env.CONVERTED_TO_G_PATH || './uploads/upload-api/converted-to-g',
+  CONVERTED_TO_OBJ_PATH:
+    process.env.CONVERTED_TO_OBJ_PATH || './uploads/upload-api/converted-to-obj',
   THUMBNAIL_PATH: process.env.THUMBNAIL_PATH || './uploads/upload-api/thumbnails',
 
   // Conversion API paths

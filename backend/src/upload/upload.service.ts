@@ -21,19 +21,18 @@ export class UploadService {
     private readonly prisma: PrismaService
   ) {}
 
-  async convertFileToG(
+  async convertFileToObj(
     file: Express.Multer.File
   ): Promise<{ success: boolean; outputPath?: string; error?: string }> {
     try {
-      const outputDir = StorageConfig.CONVERTED_TO_G_PATH;
+      const outputDir = StorageConfig.CONVERTED_TO_OBJ_PATH;
       fs.mkdirSync(outputDir, { recursive: true });
 
       const fileNameWithoutExt = path.basename(file.originalname, path.extname(file.originalname));
-      const outputPath = path.join(outputDir, `${fileNameWithoutExt}.g`);
+      const outputPath = path.join(outputDir, `${fileNameWithoutExt}.obj`);
 
       return new Promise((resolve) => {
         const gcv = spawn('gcv', [file.path, outputPath]);
-
         let stderr = '';
 
         gcv.stderr.on('data', (data: Buffer) => {
@@ -196,19 +195,19 @@ export class UploadService {
     };
 
     const fileExt = file.originalname.split('.').pop()?.toLowerCase();
-    const isAlreadyGFormat = fileExt === 'g';
+    const isAlreadyObjFormat = fileExt === 'obj';
 
     const response = {
       success: true,
       file: false,
       thumbnail: false,
       convertedFile: false,
-      wasConverted: !isAlreadyGFormat,
+      wasConverted: !isAlreadyObjFormat,
     };
 
-    if (!isAlreadyGFormat) {
+    if (!isAlreadyObjFormat) {
       try {
-        const conversionResult = await this.convertFileToG(file);
+        const conversionResult = await this.convertFileToObj(file);
 
         if (conversionResult.success && conversionResult.outputPath) {
           console.log('Conversion successful, uploading converted file...');
@@ -222,14 +221,14 @@ export class UploadService {
 
           const uploadResult = await this.uploadToCloudinary(
             convertedFileForUpload,
-            'convertedToG'
+            'convertedToObj'
           );
 
           if (uploadResult.success) {
             response.convertedFile = true;
             uploadedFiles.push({
               public_id: (uploadResult.result as { public_id: string }).public_id,
-              folder: 'convertedToG',
+              folder: 'convertedToObj',
               resourceType: 'raw',
             });
             fileURL.convertedModelURL = (uploadResult.result as { secure_url: string }).secure_url;
@@ -239,7 +238,7 @@ export class UploadService {
             fileURL.thumbnailImageURL = '';
             return await handleError(
               'CONVERTED_FILE_UPLOAD_FAILED',
-              'Failed to upload converted .g file to cloud storage',
+              'Failed to upload converted .obj file to cloud storage',
               {
                 originalFile: file.originalname,
                 convertedFile: path.basename(conversionResult.outputPath),
@@ -251,7 +250,7 @@ export class UploadService {
           fileURL.convertedModelURL = '';
           fileURL.rawModelURL = '';
           fileURL.thumbnailImageURL = '';
-          return await handleError('CONVERSION_FAILED', 'Failed to convert file to .g format', {
+          return await handleError('CONVERSION_FAILED', 'Failed to convert file to .obj format', {
             originalFile: file.originalname,
             conversionError: conversionResult.error,
           });
@@ -267,12 +266,12 @@ export class UploadService {
       }
     }
 
-    if (isAlreadyGFormat) {
+    if (isAlreadyObjFormat) {
       try {
-        const uploadResult = await this.uploadToCloudinary(file, 'convertedToG');
+        const uploadResult = await this.uploadToCloudinary(file, 'convertedToObj');
         if (uploadResult.success) {
           response.convertedFile = true;
-          const localFilePath = path.join(StorageConfig.CONVERTED_TO_G_PATH, file.originalname);
+          const localFilePath = path.join(StorageConfig.CONVERTED_TO_OBJ_PATH, file.originalname);
           if (file.buffer) {
             fs.writeFileSync(localFilePath, file.buffer);
           } else if (file.path) {
@@ -281,7 +280,7 @@ export class UploadService {
 
           uploadedFiles.push({
             public_id: (uploadResult.result as { public_id: string }).public_id,
-            folder: 'convertedToG',
+            folder: 'convertedToObj',
             resourceType: 'raw',
           });
           fileURL.convertedModelURL = (uploadResult.result as { secure_url: string }).secure_url;
@@ -290,8 +289,8 @@ export class UploadService {
           fileURL.rawModelURL = '';
           fileURL.thumbnailImageURL = '';
           return await handleError(
-            'G_FILE_UPLOAD_FAILED',
-            'Failed to upload .g file to cloud storage',
+            'OBJ_FILE_UPLOAD_FAILED',
+            'Failed to upload .obj file to cloud storage',
             {
               file: file.originalname,
               cloudinaryResponse: uploadResult,
@@ -302,10 +301,14 @@ export class UploadService {
         fileURL.convertedModelURL = '';
         fileURL.rawModelURL = '';
         fileURL.thumbnailImageURL = '';
-        return await handleError('G_FILE_UPLOAD_ERROR', 'Error occurred while uploading .g file', {
-          file: file.originalname,
-          error: error instanceof Error ? error.message : 'Unknown upload error',
-        });
+        return await handleError(
+          'OBJ_FILE_UPLOAD_ERROR',
+          'Error occurred while uploading .obj file',
+          {
+            file: file.originalname,
+            error: error instanceof Error ? error.message : 'Unknown upload error',
+          }
+        );
       }
     }
 
@@ -459,7 +462,7 @@ export class UploadService {
 
   async cleanupLocalFiles() {
     try {
-      const convertedDir = StorageConfig.CONVERTED_TO_G_PATH;
+      const convertedDir = StorageConfig.CONVERTED_TO_OBJ_PATH;
       if (fs.existsSync(convertedDir)) {
         const files = fs.readdirSync(convertedDir);
         for (const file of files) {

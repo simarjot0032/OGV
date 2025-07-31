@@ -20,7 +20,7 @@ ENV PATH="/cli/BRL-CAD_7.40.2_Linux_x86_64/bin:$PATH"
 RUN echo 'export PATH="/cli/BRL-CAD_7.40.2_Linux_x86_64/bin:$PATH"'
 
 RUN mkdir -p ./uploads/upload-api/raw \
-    ./uploads/upload-api/converted-to-g \
+    ./uploads/upload-api/converted-to-obj \
     ./uploads/upload-api/thumbnails \
     ./uploads/conversion-api/inputs \
     ./uploads/conversion-api/outputs \
@@ -33,4 +33,4 @@ RUN npx prisma generate
 RUN yarn build
 
 EXPOSE 3000
-CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma generate && yarn start:prod"]
+CMD ["sh", "-c", "npx prisma migrate deploy --skip-seed && yarn start:prod"]

@@ -36,7 +36,7 @@ export class UploadController {
       if (fileURL.convertedModelURL) {
         await this.uploadService.deleteFromCloudinary(
           this.extractPublicId(fileURL.convertedModelURL),
-          'convertedToG',
+          'convertedToObj',
           'raw'
         );
       }

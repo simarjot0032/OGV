@@ -15,6 +15,7 @@ export const multerConfig = {
   },
 
   fileFilter: (req: Request, file: Express.Multer.File, callback: FileFilterCallback) => {
+    console.log('file', file.mimetype);
     const ext: string = file.originalname.split('.').pop()?.toLowerCase() || '';
     const isValid = InputFormats.includes(ext);
 

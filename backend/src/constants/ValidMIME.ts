@@ -1,6 +1,6 @@
 export const MIME_Types: Record<string, string> = {
   obj: 'model/obj',
-  stl: 'application/octet-stream',
+  stl: 'model/stl',
   ply: 'application/octet-stream',
   vrml: 'model/vrml',
   '3mf': 'model/3mf',
