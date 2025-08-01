@@ -13,6 +13,61 @@ interface Props {
 }
 
 export const UploadBanner = ({ fileInformation }: Props) => {
+  const handleUpload = async () => {
+    if (validateFileInformation(fileInformation)) {
+      try {
+        const url = process.env.NEXT_PUBLIC_UPLOAD_URL;
+        const ipResponse = await fetch('https://api.ipify.org?format=json');
+        const ipData = await ipResponse.json();
+        const userIP = ipData.ip;
+        const formData = new FormData();
+        if (fileInformation.file) {
+          formData.append('file', fileInformation.file);
+          console.log('File uploaded:', fileInformation.file);
+        }
+        
+        if (fileInformation.thumbnail) {
+          formData.append('thumbnailImage', fileInformation.thumbnail);
+          console.log('Thumbnail uploaded:', fileInformation.thumbnail);
+        }
+      
+        formData.append('title', fileInformation.title);
+        formData.append('description', fileInformation.description);
+        formData.append('category', fileInformation.category);
+        formData.append('license', fileInformation.license);
+        formData.append('expiresIn', fileInformation.expiresIn.toString());
+        formData.append('userIP', userIP);
+        if (url) {
+        const response = await fetch(url, {
+          method: 'POST',
+              body: formData,
+          });
+        
+
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success) {
+            toast.success('File uploaded successfully!');
+            console.log('Upload successful:', result);
+          } else {
+            toast.error('Upload failed: ' + result.error);
+            console.error('Upload failed:', result);
+          }
+        } else {
+          const error = await response.text();
+          toast.error('Upload failed: ' + error);
+          console.error('Upload failed:', error);
+        }
+      } else {
+       toast.error('We are facing some issues with the server. Please try again later.');
+      }
+      } catch (error) {
+        toast.error('Upload failed: ' + error);
+        console.error('Upload error:', error);
+      }
+    }
+  };
+
   return (
     <div className="upload-banner">
       <div className="upload-banner-content">
@@ -28,11 +83,7 @@ export const UploadBanner = ({ fileInformation }: Props) => {
         />
         <PrimaryButton
           label="Upload"
-          onClick={() => {
-            if (validateFileInformation(fileInformation)) {
-              toast.success('File information is valid');
-            }
-          }}
+          onClick={handleUpload}
           icon={<UploadIcon color="#ffffff" />}
         />
       </div>

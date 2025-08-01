@@ -4,6 +4,7 @@ import '@/styles/FileInformation.scss';
 import { FileInformationData } from '@/types';
 import { FileExipryCalculate } from '@/utils/FileExipryCalculate';
 import { FileSize } from '@/utils/FileSize';
+import { Licenses } from '@/data/Licenses';
 
 interface Props {
   fileInformation: FileInformationData;
@@ -22,12 +23,14 @@ export const FileInformation = ({
   });
 
   const handleLicenseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFileInformation({ ...fileInformation, license: e.target.value });
-    if (e.target.value === 'Unknown') {
-      setFileInformation({ ...fileInformation, expiresIn: 1 });
-    } else if (e.target.value !== 'Unknown') {
-      setFileInformation({ ...fileInformation, expiresIn: 24 });
-    }
+    const newLicense = e.target.value;
+    const newExpiresIn = newLicense === 'unknown' ? 1 : newLicense === '' ? 0: 24;
+
+    setFileInformation({ 
+      ...fileInformation, 
+      license: newLicense,
+      expiresIn: newExpiresIn 
+    });
   };
 
   return (
@@ -50,7 +53,11 @@ export const FileInformation = ({
               value={fileInformation.license}
               onChange={handleLicenseChange}
             >
-              <option value="">Select License</option>
+              {Licenses.map((license) => (
+                <option key={license.optionValue} value={license.optionValue}>
+                  {license.optionName}
+                </option>
+              ))}
             </select>
           </div>
           <div className="file-information-content-item">

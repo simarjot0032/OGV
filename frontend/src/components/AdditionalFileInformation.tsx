@@ -3,6 +3,8 @@ import { Paragraph } from './common';
 import '@/styles/AdditionalFileInformation.scss';
 import { FileIcon } from '@/icons/File.icon';
 import { FileInformationData } from '@/types';
+import { ModelCategory } from '@/data/ModelCategory';
+
 
 interface Props {
   fileInformation: FileInformationData;
@@ -104,7 +106,11 @@ export const AdditionalFileInformation = ({
                   })
                 }
               >
-                <option value="1">Select Category</option>
+                {ModelCategory.map((category) => (
+                  <option key={category.optionValue} value={category.optionValue}>
+                    {category.optionName}
+                  </option>
+                ))}
               </select>
             </div>
           </form>
