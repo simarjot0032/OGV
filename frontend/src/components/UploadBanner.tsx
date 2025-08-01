@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Paragraph, Title } from './common';
 import '@/styles/UploadBanner.scss';
 import { PrimaryButton, SecondaryButton } from './common';
@@ -13,7 +13,9 @@ interface Props {
 }
 
 export const UploadBanner = ({ fileInformation }: Props) => {
+  const [isUploading, setIsUploading] = useState(false);
   const handleUpload = async () => {
+    setIsUploading(true);
     if (validateFileInformation(fileInformation)) {
       try {
         const url = process.env.NEXT_PUBLIC_UPLOAD_URL;
@@ -65,6 +67,7 @@ export const UploadBanner = ({ fileInformation }: Props) => {
         toast.error('Upload failed: ' + error);
         console.error('Upload error:', error);
       }
+      setIsUploading(false);
     }
   };
 
@@ -82,7 +85,8 @@ export const UploadBanner = ({ fileInformation }: Props) => {
           icon={<PreviewIcon color="#000" className="svg-icon" />}
         />
         <PrimaryButton
-          label="Upload"
+          label={isUploading ? 'Uploading...' : 'Upload'}
+          disabled={isUploading}
           onClick={handleUpload}
           icon={<UploadIcon color="#ffffff" />}
         />
