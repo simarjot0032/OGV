@@ -1,8 +1,8 @@
 export const Licenses = [
-    {
-        optionName: 'Select License',
-        optionValue: '',
-    },
+  {
+    optionName: 'Select License',
+    optionValue: '',
+  },
   {
     optionName: 'Unknown',
     optionValue: 'unknown',

@@ -15,8 +15,8 @@ interface Props {
 export const UploadBanner = ({ fileInformation }: Props) => {
   const [isUploading, setIsUploading] = useState(false);
   const handleUpload = async () => {
-    setIsUploading(true);
     if (validateFileInformation(fileInformation)) {
+      setIsUploading(true);
       try {
         const url = process.env.NEXT_PUBLIC_UPLOAD_URL;
         const ipResponse = await fetch('https://api.ipify.org?format=json');
