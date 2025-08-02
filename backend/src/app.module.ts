@@ -5,9 +5,10 @@ import { ConverterModule } from './converter/converter.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UploadModule } from './upload/upload.module';
 import { StorageService } from './services/storage.service';
+import { ModelModule } from './model/model.module';
 
 @Module({
-  imports: [ConverterModule, PrismaModule, UploadModule],
+  imports: [ConverterModule, PrismaModule, UploadModule, ModelModule],
   controllers: [AppController],
   providers: [AppService, StorageService],
 })

@@ -2,8 +2,6 @@ import {
   Body,
   Controller,
   Post,
-  Get,
-  Param,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -16,20 +14,11 @@ import { multerConfig } from './config/multer.config';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { Request } from 'express';
 import { FileURL } from 'src/types/FileURL';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 @Controller('upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
-
-  @Get()
-  async getAllUploads() {
-    return await this.uploadService.getAllUploads();
-  }
-
-  @Get(':id')
-  async getUploadById(@Param('id') id: string) {
-    return await this.uploadService.getUploadById(id);
-  }
 
   private async cleanupUploadedFiles(fileURL: FileURL) {
     try {
@@ -80,18 +69,21 @@ export class UploadController {
     const thumbnailImage = files.find((f) => f.fieldname === 'thumbnailImage');
 
     if (!file || !thumbnailImage) {
-      return {
-        success: false,
-        error: 'Both file and thumbnail image are required',
-        debug: {
-          totalFiles: files.length,
-          availableFieldnames: files.map((f) => f.fieldname),
-          fileFound: !!file,
-          thumbnailFound: !!thumbnailImage,
-          requestHeaders: Object.keys(req.headers),
-          contentType: req.headers['content-type'],
+      throw new HttpException(
+        {
+          success: false,
+          error: 'Both file and thumbnail image are required',
+          debug: {
+            totalFiles: files.length,
+            availableFieldnames: files.map((f) => f.fieldname),
+            fileFound: !!file,
+            thumbnailFound: !!thumbnailImage,
+            requestHeaders: Object.keys(req.headers),
+            contentType: req.headers['content-type'],
+          },
         },
-      };
+        HttpStatus.BAD_REQUEST
+      );
     }
 
     const request: UploadRequestDto = {
@@ -107,10 +99,13 @@ export class UploadController {
 
     const validationResult = this.uploadService.validateRequest(request);
     if (!validationResult.success) {
-      return {
-        success: false,
-        error: 'message' in validationResult ? validationResult.message : 'Validation failed',
-      };
+      throw new HttpException(
+        {
+          success: false,
+          error: 'message' in validationResult ? validationResult.message : 'Validation failed',
+        },
+        HttpStatus.BAD_REQUEST
+      );
     }
 
     const result = await this.uploadService.processUploadWithCleanup(file, thumbnailImage, fileURL);
@@ -149,29 +144,38 @@ export class UploadController {
           };
         } else {
           await this.cleanupUploadedFiles(result.URL);
-          return {
-            success: false,
-            error: 'Upload successful but failed to save to database',
-            databaseError: saveResult.error,
-          };
+          throw new HttpException(
+            {
+              success: false,
+              error: 'Upload successful but failed to save to database',
+              databaseError: saveResult.error,
+            },
+            HttpStatus.INTERNAL_SERVER_ERROR
+          );
         }
       } catch (saveError) {
         console.error('Database save error:', saveError);
         await this.cleanupUploadedFiles(result.URL);
-        return {
-          success: false,
-          error: 'Database error occurred',
-          details: saveError instanceof Error ? saveError.message : 'Unknown database error',
-        };
+        throw new HttpException(
+          {
+            success: false,
+            error: 'Database error occurred',
+            details: saveError instanceof Error ? saveError.message : 'Unknown database error',
+          },
+          HttpStatus.INTERNAL_SERVER_ERROR
+        );
       }
     } else {
       if ('URL' in result && result.URL) {
         await this.cleanupUploadedFiles(result.URL);
       }
-      return {
-        success: false,
-        error: 'Failed to process upload',
-      };
+      throw new HttpException(
+        {
+          success: false,
+          error: 'Failed to process upload',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
   }
 }
