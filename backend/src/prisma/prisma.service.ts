@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { UploadModel } from '@prisma/client';
 
+type UploadModelWithoutIP = Omit<UploadModel, 'userIP'>;
+
 @Injectable()
 export class PrismaService extends PrismaClient {
   constructor() {
@@ -14,17 +16,49 @@ export class PrismaService extends PrismaClient {
     });
   }
 
-  async getAllUploads(): Promise<UploadModel[]> {
+  async getAllUploads(): Promise<UploadModelWithoutIP[]> {
     return this.uploadModel.findMany({
+      select: {
+        id: true,
+        thumbnailUrl: true,
+        title: true,
+        description: true,
+        category: true,
+        license: true,
+        createdAt: true,
+        status: true,
+        expiresIn: true,
+        originalFileName: true,
+        originalFileUrl: true,
+        originalFileFormat: true,
+        originalFileSize: true,
+        convertedFileUrl: true,
+      },
       orderBy: {
         createdAt: 'desc',
       },
     });
   }
 
-  async getUploadById(id: string): Promise<UploadModel | null> {
+  async getUploadById(id: string): Promise<UploadModelWithoutIP | null> {
     return this.uploadModel.findUnique({
       where: { id },
+      select: {
+        id: true,
+        thumbnailUrl: true,
+        title: true,
+        description: true,
+        category: true,
+        license: true,
+        createdAt: true,
+        status: true,
+        expiresIn: true,
+        originalFileName: true,
+        originalFileUrl: true,
+        originalFileFormat: true,
+        originalFileSize: true,
+        convertedFileUrl: true,
+      },
     });
   }
 
@@ -82,11 +116,27 @@ export class PrismaService extends PrismaClient {
     return { updatedCount: result.count };
   }
 
-  async getExpiredModels(): Promise<UploadModel[]> {
+  async getExpiredModels(): Promise<UploadModelWithoutIP[]> {
     const now = new Date();
     const models = await this.uploadModel.findMany({
       where: {
-        status: 'expired',
+        status: 'active',
+      },
+      select: {
+        id: true,
+        thumbnailUrl: true,
+        title: true,
+        description: true,
+        category: true,
+        license: true,
+        createdAt: true,
+        status: true,
+        expiresIn: true,
+        originalFileName: true,
+        originalFileUrl: true,
+        originalFileFormat: true,
+        originalFileSize: true,
+        convertedFileUrl: true,
       },
     });
     const expiredModels = models.filter((model) => {
