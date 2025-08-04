@@ -23,7 +23,7 @@ export class ModelController {
   @Get(':id')
   async getUploadById(@Param('id') id: string) {
     const result = await this.modelService.getUploadById(id);
-    if (!result.success) {
+    if (result && !result.success) {
       if (result.error === 'Upload not found') {
         throw new HttpException(
           {
@@ -33,6 +33,21 @@ export class ModelController {
           HttpStatus.NOT_FOUND
         );
       }
+      throw new HttpException(
+        {
+          success: false,
+          error: result.error,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+    return result;
+  }
+
+  @Get('expired')
+  async getExpiredModels() {
+    const result = await this.modelService.getExpiredModels();
+    if (!result.success) {
       throw new HttpException(
         {
           success: false,

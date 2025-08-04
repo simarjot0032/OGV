@@ -7,10 +7,11 @@ export class ModelService {
   async getAllUploads() {
     try {
       const uploads = await this.prisma.getAllUploads();
+      const activeUploads = uploads.filter((upload) => upload.status === 'active');
       return {
         success: true,
-        data: uploads,
-        count: uploads.length,
+        data: activeUploads,
+        count: activeUploads.length,
       };
     } catch (error) {
       console.error('Failed to get uploads from database:', error);
@@ -23,21 +24,40 @@ export class ModelService {
   async getUploadById(id: string) {
     try {
       const upload = await this.prisma.getUploadById(id);
+      if (upload && upload.status === 'active') {
+        return {
+          success: true,
+          data: upload,
+        };
+      }
       if (!upload) {
         return {
           success: false,
           error: 'Upload not found',
         };
       }
-      return {
-        success: true,
-        data: upload,
-      };
     } catch (error) {
       console.error('Failed to get upload by ID:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Failed to retrieve upload',
+      };
+    }
+  }
+
+  async getExpiredModels() {
+    try {
+      const expiredModels = await this.prisma.getExpiredModels();
+      return {
+        success: true,
+        data: expiredModels,
+        count: expiredModels.length,
+      };
+    } catch (error) {
+      console.error('Failed to get expired models:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to retrieve expired models',
       };
     }
   }
