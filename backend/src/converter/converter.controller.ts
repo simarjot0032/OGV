@@ -5,6 +5,7 @@ import { multerConfig } from './config/multer.config';
 import { ConversionRequestDto } from './dto';
 import { Response } from 'express';
 import * as path from 'path';
+import * as fs from 'fs';
 
 @Controller('converter')
 export class ConverterController {
@@ -47,6 +48,13 @@ export class ConverterController {
 
       const result = await this.converterService.convertToMultipleFormats(file, outputFormats);
 
+      try {
+        fs.unlinkSync(file.path);
+        console.log(`🗑️ Deleted input file: ${file.path}`);
+      } catch (deleteError) {
+        console.error('Failed to delete input file:', deleteError);
+      }
+
       if (!result.success) {
         res.status(500).json({ message: result.message || 'Conversion failed' });
         return;
@@ -58,6 +66,13 @@ export class ConverterController {
           if (err) {
             console.error('Download error:', err);
             res.status(500).send('Failed to send the converted file.');
+          } else {
+            try {
+              fs.unlinkSync(convertedFile.path);
+              console.log(`🗑️ Deleted file: ${convertedFile.path}`);
+            } catch (deleteError) {
+              console.error('Failed to delete file:', deleteError);
+            }
           }
         });
       } else {
@@ -76,6 +91,20 @@ export class ConverterController {
           if (err) {
             console.error('Download error:', err);
             res.status(500).send('Failed to send the zip file.');
+          } else {
+            try {
+              fs.unlinkSync(zipPath);
+
+              result.files.forEach((file) => {
+                try {
+                  fs.unlinkSync(file.path);
+                } catch (deleteError) {
+                  console.error('Failed to delete file:', deleteError);
+                }
+              });
+            } catch (deleteError) {
+              console.error('Failed to delete zip file:', deleteError);
+            }
           }
         });
       }
