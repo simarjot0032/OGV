@@ -1,3 +1,4 @@
+'use client'
 import React, { useRef, useState } from 'react';
 import { Paragraph } from './common';
 import '@/styles/AdditionalFileInformation.scss';

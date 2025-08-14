@@ -1,0 +1,25 @@
+@use './_Variables' as *;
+
+.explore-page {
+  padding: 20px;
+  &-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  &-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &-count-container {
+    background-color: $surface-color;
+    padding: 10px 5px;
+    border-radius: $border-radius;
+    border: 1px solid $border-color;
+    width: fit-content;
+    font-size: 1rem;
+    font-weight: 400;
+  }
+}

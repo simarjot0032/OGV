@@ -1,4 +1,5 @@
-import React, { useRef, useCallback, useEffect } from 'react';
+'use client'
+import React, { useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import '@/styles/FileUpload.scss';
 import { FileIcon, UploadIcon } from '@/icons';

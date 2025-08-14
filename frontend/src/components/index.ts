@@ -7,3 +7,5 @@ export { Navbar } from './Navbar';
 export { Paragraph ,PrimaryButton, SecondaryButton, Title} from "./common";
 export { AdditionalFileInformation } from './AdditionalFileInformation';
 export { FileInformation } from './FileInformation';
+export { ModelCard } from './ModelCard';
+export { SearchBar } from './SearchBar';

@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from 'react';
 import { Paragraph, Title } from './common';
 import '@/styles/UploadBanner.scss';
