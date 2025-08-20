@@ -10,10 +10,12 @@
   &-header {
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
   }
   &-count-container {
+    width: fit-content;
     background-color: $surface-color;
     padding: 10px 5px;
     border-radius: $border-radius;
@@ -21,5 +23,51 @@
     width: fit-content;
     font-size: 1rem;
     font-weight: 400;
+  }
+  &-models-container {
+    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  &-search-not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 40vh;
+    gap: 20px;
+  }
+  &-model-loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    flex-direction: column;
+    gap: 20px;
+  }
+  &-model-loading-error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    flex-direction: column;
+    gap: 20px;
+  }
+    &-model-loading-error {
+    padding: 10px 20px;
+    background-color: #d0245e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}
+@media (min-width: $breakpoint-small) {
+  .explore-page-models-container {
+    justify-content: start;
+    gap: 10px;
   }
 }

@@ -2,35 +2,45 @@
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, Grid } from '@react-three/drei';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { Camera } from 'three';
+import { useParams } from 'next/navigation';
 import {
   cameraPresets,
   zoomPresets,
   scalePresets,
-  bgColors,
 } from '@/constants';
+import '@/styles/ModelViewer.scss';
+import { Paragraph } from '@/components';
+import { getConvertedFileURL } from '@/utils/ConvertedFileURL';
 
 function Model({ url, scale }: { url: string; scale: number }) {
-    const obj = useLoader(OBJLoader, url);
-    
-    return (
-      <primitive 
-        object={obj} 
-        scale={[scale, scale, scale]}
-        position={[0, 0, 0]}
-      />
-    );
+  const obj = useLoader(OBJLoader, url);
+
+  return (
+    <primitive
+      object={obj}
+      scale={[scale, scale, scale]}
+      position={[0, 0, 0]}
+      rotation={[-Math.PI / 2, 0, 0]}
+    />
+  );
 }
+
 const ModelViewerPage = () => {
+  const params = useParams();
+  const modelId = params.id as string;
+  
   const [currentView, setCurrentView] = useState('perspective');
   const [cameraRef, setCameraRef] = useState<Camera | null>(null);
   const [showGrid, setShowGrid] = useState(true);
   const [autoRotate, setAutoRotate] = useState(false);
-  const [bgColor, setBgColor] = useState('#000000');
-  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [bgColor, setBgColor] = useState('#ffffff');
   const [currentZoom, setCurrentZoom] = useState(8);
-  const [modelScale, setModelScale] = useState(0.01);
+  const [modelScale, setModelScale] = useState(0.02);
+  const [modelUrl, setModelUrl] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string>('');
 
 
   const handleViewChange = (view: string) => {
@@ -54,7 +64,6 @@ const ModelViewerPage = () => {
 
   const handleBgColorChange = (color: string) => {
     setBgColor(color);
-    setShowColorPicker(false);
   };
 
   const handleZoomChange = (distance: number) => {
@@ -69,365 +78,279 @@ const ModelViewerPage = () => {
   const handleScaleChange = (scale: number) => {
     setModelScale(scale);
   };
-  return <>
-   <div style={{ width: '100%', height: '100vh', position: 'relative' }}>
-      <Canvas
-        camera={{ position: [3, 3, 3], fov: 75 }}
-        style={{ background: bgColor }}
-        onCreated={({ camera }) => setCameraRef(camera)}
-      >
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[10, 10, 5]} intensity={1.2} />
-        <directionalLight position={[-10, -10, -5]} intensity={0.8} />
-        <directionalLight position={[0, 10, 0]} intensity={0.6} />
-        <directionalLight position={[0, -10, 0]} intensity={0.4} />
-        <pointLight position={[5, 5, 5]} intensity={0.8} />
-        <pointLight position={[-5, -5, -5]} intensity={0.6} />
-        <pointLight position={[0, 0, 10]} intensity={0.4} />
-        <pointLight position={[0, 0, -10]} intensity={0.4} />
-        
-        {showGrid && (
-          <Grid 
-            args={[10, 10]} 
-            cellSize={1} 
-            cellThickness={0.5} 
-            cellColor="#6f6f6f" 
-            sectionSize={5} 
-            sectionThickness={1} 
-            sectionColor="#9d4b4b" 
-            fadeDistance={30} 
-            fadeStrength={1} 
-            followCamera={false} 
-            infiniteGrid={true} 
-          />
-        )}
-        
-        <Suspense fallback={null}>
-          <Model url="https://res.cloudinary.com/dlcdglbil/raw/upload/v1754076053/convertedToObj/e8taefm9dyyin7zhoaav.obj" scale={modelScale} />
-        </Suspense>
-        
-        <OrbitControls 
-          enablePan={true}
-          enableZoom={true}
-          enableRotate={true}
-          minDistance={0.05}
-          maxDistance={100}
-          rotateSpeed={0.8}
-          panSpeed={0.8}
-          zoomSpeed={1.2}
-          dampingFactor={0.05}
-          enableDamping={true}
-          autoRotate={autoRotate}
-          autoRotateSpeed={1}
-          keyPanSpeed={10}
-          screenSpacePanning={true}
-          maxPolarAngle={Math.PI}
-          minPolarAngle={0}
-          maxAzimuthAngle={Infinity}
-          minAzimuthAngle={-Infinity}
-        />
-      </Canvas>
-      
-      <div style={{
-        position: 'absolute',
-        bottom: '20px',
-        left: '20px',
-        color: 'white',
-        background: 'rgba(0,0,0,0.8)',
-        padding: '15px',
-        borderRadius: '8px',
-        fontSize: '14px',
-        fontFamily: 'Arial, sans-serif',
-        minWidth: '180px'
-      }}>
-        <div style={{ marginBottom: '10px', fontWeight: 'bold' }}>📏 Model Scale:</div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '5px', marginBottom: '10px' }}>
-          {scalePresets.map((scale) => (
-            <button
-              key={scale.name}
-              onClick={() => handleScaleChange(scale.scale)}
-              style={{
-                padding: '6px 12px',
-                background: modelScale === scale.scale ? '#4CAF50' : '#333',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '12px',
-                textAlign: 'left'
-              }}
-            >
-              {scale.name} ({scale.scale})
-            </button>
-          ))}
-        </div>
-        <div style={{ marginTop: '10px', textAlign: 'center' }}>
-          <input
-            type="range"
-            min="0.001"
-            max="0.5"
-            step="0.001"
-            value={modelScale}
-            onChange={(e) => handleScaleChange(parseFloat(e.target.value))}
-            style={{
-              width: '100%',
-              height: '6px',
-              borderRadius: '3px',
-              background: '#333',
-              outline: 'none',
-              cursor: 'pointer'
-            }}
-          />
-          <div style={{ fontSize: '11px', marginTop: '5px' }}>
-            Current Scale: {modelScale.toFixed(3)}
-          </div>
-        </div>
-      </div>
-      
-      <div style={{
-        position: 'absolute',
-        bottom: '20px',
-        left: '220px',
-        color: 'white',
-        background: 'rgba(0,0,0,0.8)',
-        padding: '15px',
-        borderRadius: '8px',
-        fontSize: '14px',
-        fontFamily: 'Arial, sans-serif',
-        minWidth: '180px'
-      }}>
-        <div style={{ marginBottom: '10px', fontWeight: 'bold' }}>🔍 Zoom Level:</div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '5px' }}>
-          {zoomPresets.map((zoom) => (
-            <button
-              key={zoom.name}
-              onClick={() => handleZoomChange(zoom.distance)}
-              style={{
-                padding: '6px 12px',
-                background: currentZoom === zoom.distance ? '#4CAF50' : '#333',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '12px',
-                textAlign: 'left'
-              }}
-            >
-              {zoom.name} ({zoom.distance}x)
-            </button>
-          ))}
-        </div>
-        <div style={{ marginTop: '10px', textAlign: 'center' }}>
-          <input
-            type="range"
-            min="0.05"
-            max="50"
-            step="0.1"
-            value={currentZoom}
-            onChange={(e) => handleZoomChange(parseFloat(e.target.value))}
-            style={{
-              width: '100%',
-              height: '6px',
-              borderRadius: '3px',
-              background: '#333',
-              outline: 'none',
-              cursor: 'pointer'
-            }}
-          />
-          <div style={{ fontSize: '11px', marginTop: '5px' }}>
-            Current: {currentZoom.toFixed(1)}x
-          </div>
-        </div>
-      </div>
-      
-      <div style={{
-        position: 'absolute',
-        bottom: '20px',
-        right: '20px',
-        color: 'white',
-        background: 'rgba(0,0,0,0.8)',
-        padding: '15px',
-        borderRadius: '8px',
-        fontSize: '14px',
-        fontFamily: 'Arial, sans-serif',
-        minWidth: '200px'
-      }}>
-        <div style={{ marginBottom: '10px', fontWeight: 'bold' }}>🎨 Background Color:</div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px', marginBottom: '10px' }}>
-          {bgColors.slice(0, 6).map((color) => (
-            <button
-              key={color.value}
-              onClick={() => handleBgColorChange(color.value)}
-              style={{
-                padding: '8px 12px',
-                background: color.value,
-                color: color.name === 'White' || color.name === 'Light Gray' ? '#000' : '#fff',
-                border: bgColor === color.value ? '2px solid #4CAF50' : '1px solid #666',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '11px',
-                fontWeight: 'bold'
-              }}
-            >
-              {color.name}
-            </button>
-          ))}
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px' }}>
-          {bgColors.slice(6).map((color) => (
-            <button
-              key={color.value}
-              onClick={() => handleBgColorChange(color.value)}
-              style={{
-                padding: '8px 12px',
-                background: color.value,
-                color: color.name === 'White' || color.name === 'Light Gray' ? '#000' : '#fff',
-                border: bgColor === color.value ? '2px solid #4CAF50' : '1px solid #666',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '11px',
-                fontWeight: 'bold'
-              }}
-            >
-              {color.name}
-            </button>
-          ))}
-        </div>
-        <div style={{ marginTop: '10px', textAlign: 'center' }}>
-          <input
-            type="color"
-            value={bgColor}
-            onChange={(e) => handleBgColorChange(e.target.value)}
-            style={{
-              width: '100%',
-              height: '30px',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
-          />
-        </div>
-      </div>
-      
-      <div style={{
-        position: 'absolute',
-        bottom: '20px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        color: 'white',
-        background: 'rgba(0,0,0,0.8)',
-        padding: '10px 15px',
-        borderRadius: '8px',
-        fontSize: '14px',
-        fontFamily: 'Arial, sans-serif'
-      }}>
-        <button
-          onClick={() => setAutoRotate(!autoRotate)}
-          style={{
-            padding: '8px 16px',
-            background: autoRotate ? '#4CAF50' : '#666',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 'bold'
-          }}
-        >
-          {autoRotate ? '⏸️ Stop Auto-Rotate' : '🔄 Start Auto-Rotate'}
-        </button>
-      </div>
-      
-      <div style={{
-        position: 'absolute',
-        top: '20px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        color: 'white',
-        background: 'rgba(0,0,0,0.8)',
-        padding: '10px 15px',
-        borderRadius: '8px',
-        fontSize: '14px',
-        fontFamily: 'Arial, sans-serif'
-      }}>
-        <button
-          onClick={() => setShowGrid(!showGrid)}
-          style={{
-            padding: '8px 16px',
-            background: showGrid ? '#4CAF50' : '#666',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 'bold'
-          }}
-        >
-          {showGrid ? '🔲 Hide Grid' : '⬜ Show Grid'}
-        </button>
-      </div>
-      
-      <div style={{
-        position: 'absolute',
-        top: '20px',
-        right: '20px',
-        color: 'white',
-        background: 'rgba(0,0,0,0.8)',
-        padding: '15px',
-        borderRadius: '8px',
-        fontSize: '14px',
-        fontFamily: 'Arial, sans-serif',
-        minWidth: '200px'
-      }}>
-        <div style={{ marginBottom: '10px', fontWeight: 'bold' }}>📐 Perspective Views:</div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px' }}>
-          {Object.keys(cameraPresets).map((view) => (
-            <button
-              key={view}
-              onClick={() => handleViewChange(view)}
-              style={{
-                padding: '8px 12px',
-                background: currentView === view ? '#4CAF50' : '#333',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '12px',
-                textTransform: 'capitalize'
-              }}
-            >
-              {view}
-            </button>
-          ))}
-        </div>
-      </div>
-      
-      <div style={{
-        position: 'absolute',
-        top: '20px',
-        left: '20px',
-        color: 'white',
-        background: 'rgba(0,0,0,0.7)',
-        padding: '10px',
-        borderRadius: '5px',
-        fontSize: '14px',
-        fontFamily: 'Arial, sans-serif'
-      }}>
-        <div><strong>Controls:</strong></div>
-        <div>🖱️ Left click + drag = Rotate 360°</div>
-        <div>🖱️ Right click + drag = Pan</div>
-        <div>🖱️ Scroll wheel = Zoom</div>
-        <div>📐 Click buttons for preset views</div>
-        <div>🔲 Toggle grid on/off</div>
-        <div>🔄 Auto-rotate for continuous 360°</div>
-        <div>🎨 Change background color</div>
-        <div>🔍 Enhanced zoom controls</div>
-        <div>💡 Improved lighting for all angles</div>
-        <div>📏 Scale model size up/down</div>
-      </div>
-    </div>
-    </>
 
+  useEffect(() => {
+    const fetchModelUrl = async () => {
+      if (!modelId) return;
+      
+      try {
+        setIsLoading(true);
+        setError('');
+        const url = await getConvertedFileURL(modelId);
+        setModelUrl(url);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load model');
+        console.error('Error fetching model URL:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchModelUrl();
+  }, [modelId]);
+
+  if (isLoading) {
+    return (
+      <div className="model-viewer-container">
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <Paragraph paragraph="Loading model..." />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="model-viewer-container">
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
+          <Paragraph paragraph={`Error: ${error}`} />
+          <button onClick={() => window.location.reload()} style={{ marginTop: '10px', padding: '8px 16px' }}>
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="model-viewer-container">
+        <Canvas
+          camera={{ position: [0.5, 0.5, 0.5], fov: 75 }}
+          className="model-viewer-canvas"
+          style={{ background: bgColor }}
+          onCreated={({ camera }) => setCameraRef(camera)}
+        >
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[10, 10, 5]} intensity={1.2} />
+          <directionalLight position={[-10, -10, -5]} intensity={0.8} />
+          <directionalLight position={[0, 10, 0]} intensity={0.6} />
+          <directionalLight position={[0, -10, 0]} intensity={0.4} />
+          <pointLight position={[5, 5, 5]} intensity={0.8} />
+          <pointLight position={[-5, -5, -5]} intensity={0.6} />
+          <pointLight position={[0, 0, 10]} intensity={0.4} />
+          <pointLight position={[0, 0, -10]} intensity={0.4} />
+
+          {showGrid && (
+            <Grid
+              args={[10, 10]}
+              cellSize={1}
+              cellThickness={0.5}
+              cellColor="#6f6f6f"
+              sectionSize={5}
+              sectionThickness={1}
+              sectionColor="#9d4b4b"
+              fadeDistance={30}
+              fadeStrength={1}
+              followCamera={false}
+              infiniteGrid={true}
+            />
+          )}
+
+          <Suspense fallback={null}>
+            {modelUrl && (
+              <Model
+                  url={modelUrl}
+                scale={modelScale}
+              />
+            )}
+          </Suspense>
+
+          <OrbitControls
+            enablePan={true}
+            enableZoom={true}
+            enableRotate={true}
+            minDistance={0.05}
+            maxDistance={100}
+            rotateSpeed={0.8}
+            panSpeed={0.8}
+            zoomSpeed={1.2}
+            dampingFactor={0.05}
+            enableDamping={true}
+            autoRotate={autoRotate}
+            autoRotateSpeed={1}
+            keyPanSpeed={10}
+            screenSpacePanning={true}
+            maxPolarAngle={Math.PI}
+            minPolarAngle={0}
+            maxAzimuthAngle={Infinity}
+            minAzimuthAngle={-Infinity}
+          />
+        </Canvas>
+   
+
+        <div className="model-viewer-settings-container model-viewer-settings-container-active">
+          <div className="model-viewer-settings-title">
+            <h3>Settings</h3>
+          </div>
+          <div
+          className="model-viewer-settings-item-container"
+        >
+          <div className="model-viewer-settings-item-title">
+            Controls:
+          </div>
+          <div className="model-viewer-settings-item-description">
+          <div>🖱️ Left click + drag = Rotate 360°</div>
+          <div>🖱️ Right click + drag = Pan</div>
+          <div>🖱️ Scroll wheel = Zoom</div>
+          <div>📐 Click buttons for preset views</div>
+          <div>🔲 Toggle grid on/off</div>
+          <div>🔄 Auto-rotate for continuous 360°</div>
+          <div>🎨 Change background color</div>
+          <div>🔍 Enhanced zoom controls</div>
+          <div>💡 Improved lighting for all angles</div>
+          <div>📏 Scale model size up/down</div>
+          </div>
+        </div>  
+          <div className="model-viewer-settings-button-container">
+            <button
+              onClick={() => setShowGrid(!showGrid)}
+              className="model-viewer-settings-button"
+              style={{
+                background: showGrid ? 'transparent' : '#d0245e',
+                color: showGrid ? '#000' : '#fff',
+              }}
+            >
+              {showGrid ? 'Hide Grid' : 'Show Grid'}
+            </button>
+            <button
+              onClick={() => setAutoRotate(!autoRotate)}
+              className="model-viewer-settings-button"
+              style={{
+                background: autoRotate ? 'transparent' : '#d0245e',
+                color: autoRotate ? '#000' : '#fff',
+              }}
+            >
+              {autoRotate ? 'Stop Auto-Rotate' : 'Start Auto-Rotate'}
+            </button>
+          </div>
+
+          <div className="model-viewer-settings-item-container">
+            <div className="model-viewer-settings-item-title">
+              📏 Model Scale:
+            </div>
+            <div className="model-viewer-settings-select-item">
+              {scalePresets.map((scale) => (
+                <button
+                  key={scale.name}
+                  onClick={() => handleScaleChange(scale.scale)}
+                  className="model-viewer-settings-select"
+                  style={{
+                    background:
+                      modelScale === scale.scale ? '#d0245e' : 'transparent',
+                    color: modelScale === scale.scale ? '#fff' : '#000',
+                  }}
+                >
+                  {scale.name} ({scale.scale})
+                </button>
+              ))}
+            </div>
+            <div>
+              <input
+                type="range"
+                min="0.001"
+                max="0.5"
+                step="0.001"
+                value={modelScale}
+                onChange={(e) => handleScaleChange(parseFloat(e.target.value))}
+                className="model-viewer-settings-slider"
+              />
+              <Paragraph
+                paragraph={`Current Scale: ${modelScale.toFixed(3)}`}
+                className="model-viewer-settings-slider-value"
+              />
+            </div>
+          </div>
+
+          <div className="model-viewer-settings-item-container">
+            <div className="model-viewer-settings-item-title">
+              📐 Perspective Views:
+            </div>
+            <div className="model-viewer-settings-select-item">
+              {Object.keys(cameraPresets).map((view) => (
+                <button
+                  key={view}
+                  onClick={() => handleViewChange(view)}
+                  className="model-viewer-settings-select"
+                  style={{
+                    background:
+                      currentView === view ? '#d0245e' : 'transparent',
+                    color: currentView === view ? '#fff' : '#000',
+                  }}
+                >
+                  {view}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="model-viewer-settings-item-container model-viewer-settings-color-picker-container">
+            <div className="model-viewer-settings-item-title">
+              🎨 Background Color:
+            </div>
+
+              <input
+                type="color"
+                value={bgColor}
+                onChange={(e) => handleBgColorChange(e.target.value)}
+                className="model-viewer-settings-color-picker"
+              />
+          </div>
+          <div
+className="model-viewer-settings-item-container"
+        >
+          <div className="model-viewer-settings-item-title">
+            🔍 Zoom Level:
+          </div>
+          <div
+            className="model-viewer-settings-select-item"
+          >
+            {zoomPresets.map((zoom) => (
+              <button
+                key={zoom.name}
+                onClick={() => handleZoomChange(zoom.distance)}
+                className="model-viewer-settings-select"
+                style={{
+                  background:
+                    currentZoom === zoom.distance ? '#d0245e' : 'transparent',
+                  color: currentZoom === zoom.distance ? '#fff' : '#000',
+                }}
+              >
+                {zoom.name} ({zoom.distance}x)
+              </button>
+            ))}
+          </div>
+          <div style={{ marginTop: '10px', textAlign: 'center' }}>
+            <input
+              type="range"
+              min="0.5"
+              max="50"
+              step="0.1"
+              defaultValue={0.2}
+              value={currentZoom}
+              onChange={(e) => handleZoomChange(parseFloat(e.target.value))}
+              className="model-viewer-settings-slider"
+            />
+            <Paragraph
+              paragraph={`Current Zoom: ${currentZoom.toFixed(1)}x`}
+              className="model-viewer-settings-slider-value"
+            />
+          </div>
+        </div>
+
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default ModelViewerPage;

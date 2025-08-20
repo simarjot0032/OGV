@@ -19,12 +19,15 @@
   }
   &-image-container {
     width: 100%;
+    aspect-ratio: 1/1;
   }
   &-image {
     border-radius: $border-radius;
     width: 100%;
     object-fit: cover;
     min-height: 220px;
+    aspect-ratio: 1/1;
+    object-position: center;
   }
   &-details-container {
     display: flex;
@@ -46,5 +49,17 @@
   &-detail-value {
     font-size: 0.9rem;
     color: $text-color;
+  }
+}
+@media (min-width: $breakpoint-small) {
+  .model-card-container-link {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+@media (min-width: $breakpoint-medium) {
+  .model-card-container-link {
+    width: 100%;
+    max-width: 300px;
   }
 }

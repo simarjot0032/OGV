@@ -61,11 +61,10 @@ export function useFileConverter() {
         resetFormats();
         setFormKey((prev) => prev + 1);
       } else {
-        const errorText = await response.text();
-        toast.error(`Failed to convert file: ${errorText}`);
+        toast.error(`Failed to convert file Try again with a different file`);
       }
     } catch (error) {
-      toast.error(`Failed to convert file: ${error}`);
+      toast.error(`Failed to convert file Try again with a different file`);
     } finally {
       setIsConverted(false);
     }

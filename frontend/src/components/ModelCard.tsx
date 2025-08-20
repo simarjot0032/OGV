@@ -43,7 +43,7 @@ export const ModelCard = ({ modelId, image, title, category, orifinalFileType, f
   const remainingTime = calculateRemainingTime(uploadDate, expirationTime);
 
   return (
-    <Link href={`/dashboard/explore/${modelId}`} className="model-card-container-link">
+    <Link href={`/dashboard/modelviewer/${modelId}`} className="model-card-container-link">
     <div className="model-card-container">
       <div className="model-card-image-container">
         <img

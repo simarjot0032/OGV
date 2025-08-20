@@ -9,8 +9,8 @@ interface Props {
 
 export const Paragraph = ({ paragraph, className, style }: Props) => {
   return (
-    <h2 className={`paragraph-default ${className}`} style={style}>
+    <p className={`${className} paragraph-default`} style={style}>
       {paragraph}
-    </h2>
+    </p>
   );
 };

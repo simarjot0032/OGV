@@ -7,6 +7,6 @@ interface SideBarData {
 }
 
 export const SideBarDataList: SideBarData[] = [
-  { title: 'Explore', icon: ExploreIcon, link: '/dashboard' },
+  { title: 'Explore', icon: ExploreIcon, link: '/dashboard/explore' },
   { title: 'Upload', icon: UploadIcon, link: '/dashboard/upload' },
 ];

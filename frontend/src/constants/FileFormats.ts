@@ -7,7 +7,6 @@ export const InputFormats = [
   "x",
   "x3d",
   "3ds",
-  "dae",
   "fbx",
   "assbin",
   "g",
