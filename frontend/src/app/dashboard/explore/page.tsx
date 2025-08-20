@@ -38,29 +38,33 @@ const ExplorePage = () => {
       }
     };
 
-    fetchModels();
+    void fetchModels();
   }, []);
 
   useEffect(() => {
     if (searchTerm.trim() === '') {
       setFilteredModels(models);
     } else {
-      const filtered = models.filter((model) =>
-        model.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        model.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        model.description.toLowerCase().includes(searchTerm.toLowerCase())
+      const filtered = models.filter(
+        (model) =>
+          model.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          model.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          model.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredModels(filtered);
     }
   }, [searchTerm, models]);
 
-
   if (loading) {
     return (
       <div className="explore-page">
         <div className="explore-page-model-loading-container">
-          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>Loading Models...</div>
-          <div style={{ fontSize: '16px', color: '#666' }}>Please wait while we fetch your 3D models</div>
+          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
+            Loading Models...
+          </div>
+          <div style={{ fontSize: '16px', color: '#666' }}>
+            Please wait while we fetch your 3D models
+          </div>
         </div>
       </div>
     );
@@ -70,9 +74,16 @@ const ExplorePage = () => {
     return (
       <div className="explore-page">
         <div className="explore-page-model-loading-error-container">
-          <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#d0245e' }}>Error Loading Models</div>
+          <div
+            style={{ fontSize: '24px', fontWeight: 'bold', color: '#d0245e' }}
+          >
+            Error Loading Models
+          </div>
           <div style={{ fontSize: '16px', color: '#666' }}>{error}</div>
-          <button className="explore-page-model-loading-error" onClick={() => window.location.reload()}>
+          <button
+            className="explore-page-model-loading-error"
+            onClick={() => window.location.reload()}
+          >
             Retry
           </button>
         </div>
@@ -81,17 +92,21 @@ const ExplorePage = () => {
   }
 
   return (
-      <div className="explore-page">
-        <div className="explore-page-header">
-          <SearchBar onSearch={setSearchTerm} searchTerm={searchTerm} />
-          <div className="explore-page-count-container">
-            <Paragraph paragraph={` Total Models: ${filteredModels.length} of ${models.length}`} />
-          </div>
+    <div className="explore-page">
+      <div className="explore-page-header">
+        <SearchBar onSearch={setSearchTerm} searchTerm={searchTerm} />
+        <div className="explore-page-count-container">
+          <Paragraph
+            paragraph={` Total Models: ${filteredModels.length} of ${models.length}`}
+          />
         </div>
+      </div>
       <div className="explore-page-models-container">
         {filteredModels.length === 0 && searchTerm.trim() !== '' ? (
           <div className="explore-page-search-not-found">
-            <div style={{ fontSize: '20px', fontWeight: 'bold' }}>No Models Found</div>
+            <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
+              No Models Found
+            </div>
             <div style={{ fontSize: '16px', color: '#666' }}>
               No models match your search for "{searchTerm}"
             </div>

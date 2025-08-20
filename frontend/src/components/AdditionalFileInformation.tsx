@@ -1,11 +1,10 @@
-'use client'
+'use client';
 import React, { useRef, useState } from 'react';
 import { Paragraph } from './common';
 import '@/styles/AdditionalFileInformation.scss';
 import { FileIcon } from '@/icons/File.icon';
 import { FileInformationData } from '@/types';
 import { ModelCategory } from '@/data/ModelCategory';
-
 
 interface Props {
   fileInformation: FileInformationData;
@@ -108,7 +107,10 @@ export const AdditionalFileInformation = ({
                 }
               >
                 {ModelCategory.map((category) => (
-                  <option key={category.optionValue} value={category.optionValue}>
+                  <option
+                    key={category.optionValue}
+                    value={category.optionValue}
+                  >
                     {category.optionName}
                   </option>
                 ))}

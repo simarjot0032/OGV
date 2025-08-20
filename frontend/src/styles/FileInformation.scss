@@ -1,54 +1,54 @@
 @use '@/styles/global.scss' as *;
-.file-information{
-    &-container{
-        padding: 16px;
-        border-radius: $border-radius;
-        border: 1px solid $border-color;
-        background: $surface-color;
-        width: 100%;
-        height: fit-content;
-    }
-    &-heading{
-        margin-bottom: 16px;
-        font-size: 1.5rem;
-        font-weight: 500;
-    }
-    &-content{
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
-    &-content-item{
-        display: flex;
-        flex-direction: row;
-        gap: 8px;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-    }
-    &-label{
-        color: $tertiary-color;
-        font-size: 1rem;
-        margin: 0;
-    }
-    &-select{
-        padding: 8px;
-        border-radius: $border-radius;
-        border: 1px solid $border-color;
-        background: $bg-color;
-    }
+.file-information {
+  &-container {
+    padding: 16px;
+    border-radius: $border-radius;
+    border: 1px solid $border-color;
+    background: $surface-color;
+    width: 100%;
+    height: fit-content;
+  }
+  &-heading {
+    margin-bottom: 16px;
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+  &-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  &-content-item {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &-label {
+    color: $tertiary-color;
+    font-size: 1rem;
+    margin: 0;
+  }
+  &-select {
+    padding: 8px;
+    border-radius: $border-radius;
+    border: 1px solid $border-color;
+    background: $bg-color;
+  }
 }
 @media (min-width: $breakpoint-medium) {
-    .file-information{
-        &-container{
-            max-width: 35%;
-        }
+  .file-information {
+    &-container {
+      max-width: 35%;
     }
+  }
 }
 @media (min-width: $breakpoint-large) {
-    .file-information{
-        &-container{
-            max-width: 30%;
-        }
+  .file-information {
+    &-container {
+      max-width: 30%;
     }
+  }
 }

@@ -61,10 +61,10 @@ export function useFileConverter() {
         resetFormats();
         setFormKey((prev) => prev + 1);
       } else {
-        toast.error(`Failed to convert file Try again with a different file`);
+        toast.error('Failed to convert file Try again with a different file');
       }
-    } catch (error) {
-      toast.error(`Failed to convert file Try again with a different file`);
+    } catch {
+      toast.error('Failed to convert file Try again with a different file');
     } finally {
       setIsConverted(false);
     }
@@ -76,4 +76,4 @@ export function useFileConverter() {
     formKey,
     convertAndDownload,
   };
-} 
+}

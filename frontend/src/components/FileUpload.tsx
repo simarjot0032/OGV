@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import '@/styles/FileUpload.scss';
@@ -90,7 +90,10 @@ export const FileUpload = ({ setFileInformation, fileInformation }: Props) => {
   };
 
   const handleDropzoneClick = (event: React.MouseEvent) => {
-    if (!fileInformation.file && !(event.target as HTMLElement).closest('button')) {
+    if (
+      !fileInformation.file &&
+      !(event.target as HTMLElement).closest('button')
+    ) {
       inputRef.current?.click();
     }
   };
@@ -144,7 +147,7 @@ export const FileUpload = ({ setFileInformation, fileInformation }: Props) => {
           </div>
         )}
 
-          {!fileInformation.file && !isDragActive && (
+        {!fileInformation.file && !isDragActive && (
           <div className="file-upload-dropzone">
             <div className="file-upload-icon">
               <UploadIcon width={55} height={55} />
@@ -165,7 +168,7 @@ export const FileUpload = ({ setFileInformation, fileInformation }: Props) => {
           </div>
         )}
 
-          {fileInformation.file && !isDragActive && (
+        {fileInformation.file && !isDragActive && (
           <div className="file-upload-dropzone">
             <FileIcon />
             <Paragraph

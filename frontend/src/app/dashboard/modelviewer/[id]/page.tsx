@@ -5,11 +5,7 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { Suspense, useState, useEffect } from 'react';
 import { Camera } from 'three';
 import { useParams } from 'next/navigation';
-import {
-  cameraPresets,
-  zoomPresets,
-  scalePresets,
-} from '@/constants';
+import { cameraPresets, zoomPresets, scalePresets } from '@/constants';
 import '@/styles/ModelViewer.scss';
 import { Paragraph } from '@/components';
 import { getConvertedFileURL } from '@/utils/ConvertedFileURL';
@@ -30,7 +26,7 @@ function Model({ url, scale }: { url: string; scale: number }) {
 const ModelViewerPage = () => {
   const params = useParams();
   const modelId = params.id as string;
-  
+
   const [currentView, setCurrentView] = useState('perspective');
   const [cameraRef, setCameraRef] = useState<Camera | null>(null);
   const [showGrid, setShowGrid] = useState(true);
@@ -41,7 +37,6 @@ const ModelViewerPage = () => {
   const [modelUrl, setModelUrl] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string>('');
-
 
   const handleViewChange = (view: string) => {
     setCurrentView(view);
@@ -82,7 +77,7 @@ const ModelViewerPage = () => {
   useEffect(() => {
     const fetchModelUrl = async () => {
       if (!modelId) return;
-      
+
       try {
         setIsLoading(true);
         setError('');
@@ -96,13 +91,20 @@ const ModelViewerPage = () => {
       }
     };
 
-    fetchModelUrl();
+    void fetchModelUrl();
   }, [modelId]);
 
   if (isLoading) {
     return (
       <div className="model-viewer-container">
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+          }}
+        >
           <Paragraph paragraph="Loading model..." />
         </div>
       </div>
@@ -112,9 +114,20 @@ const ModelViewerPage = () => {
   if (error) {
     return (
       <div className="model-viewer-container">
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            flexDirection: 'column',
+          }}
+        >
           <Paragraph paragraph={`Error: ${error}`} />
-          <button onClick={() => window.location.reload()} style={{ marginTop: '10px', padding: '8px 16px' }}>
+          <button
+            onClick={() => window.location.reload()}
+            style={{ marginTop: '10px', padding: '8px 16px' }}
+          >
             Retry
           </button>
         </div>
@@ -158,12 +171,7 @@ const ModelViewerPage = () => {
           )}
 
           <Suspense fallback={null}>
-            {modelUrl && (
-              <Model
-                  url={modelUrl}
-                scale={modelScale}
-              />
-            )}
+            {modelUrl && <Model url={modelUrl} scale={modelScale} />}
           </Suspense>
 
           <OrbitControls
@@ -187,31 +195,26 @@ const ModelViewerPage = () => {
             minAzimuthAngle={-Infinity}
           />
         </Canvas>
-   
 
         <div className="model-viewer-settings-container model-viewer-settings-container-active">
           <div className="model-viewer-settings-title">
             <h3>Settings</h3>
           </div>
-          <div
-          className="model-viewer-settings-item-container"
-        >
-          <div className="model-viewer-settings-item-title">
-            Controls:
+          <div className="model-viewer-settings-item-container">
+            <div className="model-viewer-settings-item-title">Controls:</div>
+            <div className="model-viewer-settings-item-description">
+              <div>🖱️ Left click + drag = Rotate 360°</div>
+              <div>🖱️ Right click + drag = Pan</div>
+              <div>🖱️ Scroll wheel = Zoom</div>
+              <div>📐 Click buttons for preset views</div>
+              <div>🔲 Toggle grid on/off</div>
+              <div>🔄 Auto-rotate for continuous 360°</div>
+              <div>🎨 Change background color</div>
+              <div>🔍 Enhanced zoom controls</div>
+              <div>💡 Improved lighting for all angles</div>
+              <div>📏 Scale model size up/down</div>
+            </div>
           </div>
-          <div className="model-viewer-settings-item-description">
-          <div>🖱️ Left click + drag = Rotate 360°</div>
-          <div>🖱️ Right click + drag = Pan</div>
-          <div>🖱️ Scroll wheel = Zoom</div>
-          <div>📐 Click buttons for preset views</div>
-          <div>🔲 Toggle grid on/off</div>
-          <div>🔄 Auto-rotate for continuous 360°</div>
-          <div>🎨 Change background color</div>
-          <div>🔍 Enhanced zoom controls</div>
-          <div>💡 Improved lighting for all angles</div>
-          <div>📏 Scale model size up/down</div>
-          </div>
-        </div>  
           <div className="model-viewer-settings-button-container">
             <button
               onClick={() => setShowGrid(!showGrid)}
@@ -298,55 +301,50 @@ const ModelViewerPage = () => {
               🎨 Background Color:
             </div>
 
-              <input
-                type="color"
-                value={bgColor}
-                onChange={(e) => handleBgColorChange(e.target.value)}
-                className="model-viewer-settings-color-picker"
-              />
-          </div>
-          <div
-className="model-viewer-settings-item-container"
-        >
-          <div className="model-viewer-settings-item-title">
-            🔍 Zoom Level:
-          </div>
-          <div
-            className="model-viewer-settings-select-item"
-          >
-            {zoomPresets.map((zoom) => (
-              <button
-                key={zoom.name}
-                onClick={() => handleZoomChange(zoom.distance)}
-                className="model-viewer-settings-select"
-                style={{
-                  background:
-                    currentZoom === zoom.distance ? '#d0245e' : 'transparent',
-                  color: currentZoom === zoom.distance ? '#fff' : '#000',
-                }}
-              >
-                {zoom.name} ({zoom.distance}x)
-              </button>
-            ))}
-          </div>
-          <div style={{ marginTop: '10px', textAlign: 'center' }}>
             <input
-              type="range"
-              min="0.5"
-              max="50"
-              step="0.1"
-              defaultValue={0.2}
-              value={currentZoom}
-              onChange={(e) => handleZoomChange(parseFloat(e.target.value))}
-              className="model-viewer-settings-slider"
-            />
-            <Paragraph
-              paragraph={`Current Zoom: ${currentZoom.toFixed(1)}x`}
-              className="model-viewer-settings-slider-value"
+              type="color"
+              value={bgColor}
+              onChange={(e) => handleBgColorChange(e.target.value)}
+              className="model-viewer-settings-color-picker"
             />
           </div>
-        </div>
-
+          <div className="model-viewer-settings-item-container">
+            <div className="model-viewer-settings-item-title">
+              🔍 Zoom Level:
+            </div>
+            <div className="model-viewer-settings-select-item">
+              {zoomPresets.map((zoom) => (
+                <button
+                  key={zoom.name}
+                  onClick={() => handleZoomChange(zoom.distance)}
+                  className="model-viewer-settings-select"
+                  style={{
+                    background:
+                      currentZoom === zoom.distance ? '#d0245e' : 'transparent',
+                    color: currentZoom === zoom.distance ? '#fff' : '#000',
+                  }}
+                >
+                  {zoom.name} ({zoom.distance}x)
+                </button>
+              ))}
+            </div>
+            <div style={{ marginTop: '10px', textAlign: 'center' }}>
+              <input
+                type="range"
+                min="0.5"
+                max="50"
+                step="0.1"
+                defaultValue={0.2}
+                value={currentZoom}
+                onChange={(e) => handleZoomChange(parseFloat(e.target.value))}
+                className="model-viewer-settings-slider"
+              />
+              <Paragraph
+                paragraph={`Current Zoom: ${currentZoom.toFixed(1)}x`}
+                className="model-viewer-settings-slider-value"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </>

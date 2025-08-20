@@ -4,7 +4,7 @@ export { FileUpload } from './FileUpload';
 export { Logo } from './Logo';
 export { Sidebar } from './Sidebar';
 export { Navbar } from './Navbar';
-export { Paragraph ,PrimaryButton, SecondaryButton, Title} from "./common";
+export { Paragraph, PrimaryButton, SecondaryButton, Title } from './common';
 export { AdditionalFileInformation } from './AdditionalFileInformation';
 export { FileInformation } from './FileInformation';
 export { ModelCard } from './ModelCard';

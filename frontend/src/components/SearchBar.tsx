@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import '@/styles/SearchBar.scss';
 import { SearchIcon } from '@/icons';
 
@@ -10,14 +10,14 @@ interface SearchBarProps {
 export const SearchBar = ({ onSearch, searchTerm }: SearchBarProps) => {
   return (
     <div className="search-bar">
-        <input 
-          type="text" 
-          placeholder="Search By Title, Category, or Description" 
-          className="search-bar-input"
-          value={searchTerm}
-          onChange={(e) => onSearch(e.target.value)}
-        />
-        <SearchIcon />
-      </div>
-  )
-}
+      <input
+        type="text"
+        placeholder="Search By Title, Category, or Description"
+        className="search-bar-input"
+        value={searchTerm}
+        onChange={(e) => onSearch(e.target.value)}
+      />
+      <SearchIcon />
+    </div>
+  );
+};

@@ -24,12 +24,13 @@ export const FileInformation = ({
 
   const handleLicenseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLicense = e.target.value;
-    const newExpiresIn = newLicense === 'unknown' ? 1 : newLicense === '' ? 0: 24;
+    const newExpiresIn =
+      newLicense === 'unknown' ? 1 : newLicense === '' ? 0 : 24;
 
-    setFileInformation({ 
-      ...fileInformation, 
+    setFileInformation({
+      ...fileInformation,
       license: newLicense,
-      expiresIn: newExpiresIn 
+      expiresIn: newExpiresIn,
     });
   };
 
@@ -74,16 +75,16 @@ export const FileInformation = ({
               paragraph={'Original File Format'}
               className={'file-information-label'}
             />
-            <Paragraph paragraph={fileInformation.originalFileFormat||'File Not Found'} />
+            <Paragraph
+              paragraph={fileInformation.originalFileFormat || 'File Not Found'}
+            />
           </div>
           <div className="file-information-content-item">
             <Paragraph
               paragraph={'File Size'}
               className={'file-information-label'}
             />
-            <Paragraph
-              paragraph={FileSize(fileInformation.fileSize)}
-            />
+            <Paragraph paragraph={FileSize(fileInformation.fileSize)} />
           </div>
           <div className="file-information-content-item">
             <Paragraph
