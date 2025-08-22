@@ -185,11 +185,11 @@ const ModelViewerPage = () => {
         </Canvas>
         {!showSettings && (
           <div className="model-viewer-settings-container-button">
-            <SettingIcon color="#000" onClick={() => setShowSettings(true)} />
+            <SettingIcon color="white" onClick={() => setShowSettings(true)} />
           </div>
         )}
         {showSettings && (
-          <div className="model-viewer-settings-container model-viewer-settings-container-active">
+          <div className="model-viewer-settings-container">
             <div className="model-viewer-settings-title">
               <h3>Settings</h3>
               <CrossIcon
@@ -197,6 +197,7 @@ const ModelViewerPage = () => {
                 onClick={() => setShowSettings(false)}
                 width={25}
                 height={25}
+                className="model-viewer-settings-title-cross"
               />
             </div>
             <div className="model-viewer-settings-item-container">

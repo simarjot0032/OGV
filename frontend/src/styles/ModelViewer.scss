@@ -27,12 +27,26 @@
     top: 10px;
     right: 20px;
     cursor: pointer;
+    background-color: $primary-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    padding: 10px;
+    border: 1px solid $border-color;
+    transition: transform 0.3s ease-in-out;
+  }
+  &-settings-container-button:hover {
+    transform: rotate(180deg);
   }
   &-settings-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-right: 10px;
+    &-cross {
+      cursor: pointer;
+    }
   }
   &-settings-container {
     position: absolute;
@@ -45,10 +59,6 @@
     width: 100%;
     height: calc(100vh - 100px);
     overflow-y: auto;
-    display: none;
-  }
-  &-settings-container-active {
-    display: block;
   }
   &-settings-button-container {
     color: white;
