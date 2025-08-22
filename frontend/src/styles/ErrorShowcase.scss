@@ -1,0 +1,18 @@
+@use './Variables' as *;
+
+.error-showcase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  gap: 10px;
+  &-text,
+  &-sub-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: $text-color;
+    text-align: center;
+  }
+}

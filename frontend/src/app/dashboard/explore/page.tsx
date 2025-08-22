@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { ModelCard, Paragraph, SearchBar } from '@/components';
+import ErrorShowcase from '@/components/ErrorShowcase';
 import { ModelData, ModelsApiResponse } from '@/types/ModelData';
 import { FileSize } from '@/utils/FileSize';
 import '@/styles/Explore.scss';
@@ -11,12 +12,12 @@ const ExplorePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [empty, setEmpty] = useState(false);
 
   useEffect(() => {
     const fetchModels = async () => {
       try {
         const url = process.env.NEXT_PUBLIC_GET_ALL_MODELS_URL;
-        console.log(url);
         if (!url) {
           setError('No URL found');
           return;
@@ -25,8 +26,12 @@ const ExplorePage = () => {
         const data: ModelsApiResponse = await response.json();
 
         if (data.success) {
-          setModels(data.data);
-          setFilteredModels(data.data);
+          if (data.data.length > 0) {
+            setModels(data.data);
+            setFilteredModels(data.data);
+          } else {
+            setEmpty(true);
+          }
         } else {
           setError('Failed to fetch models');
         }
@@ -59,12 +64,10 @@ const ExplorePage = () => {
     return (
       <div className="explore-page">
         <div className="explore-page-model-loading-container">
-          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
-            Loading Models...
-          </div>
-          <div style={{ fontSize: '16px', color: '#666' }}>
-            Please wait while we fetch your 3D models
-          </div>
+          <ErrorShowcase
+            error="Loading Models..."
+            subText="Please wait while we fetch your 3D models"
+          />
         </div>
       </div>
     );
@@ -74,18 +77,25 @@ const ExplorePage = () => {
     return (
       <div className="explore-page">
         <div className="explore-page-model-loading-error-container">
-          <div
-            style={{ fontSize: '24px', fontWeight: 'bold', color: '#d0245e' }}
-          >
-            Error Loading Models
-          </div>
-          <div style={{ fontSize: '16px', color: '#666' }}>{error}</div>
-          <button
-            className="explore-page-model-loading-error"
-            onClick={() => window.location.reload()}
-          >
-            Retry
-          </button>
+          <ErrorShowcase
+            error="Error While Loading Models"
+            buttonText="Retry"
+            buttonClass="explore-page-retry-button"
+            buttonOnClick={() => window.location.reload()}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  if (empty) {
+    return (
+      <div className="explore-page">
+        <div className="explore-page-model-empty-container">
+          <ErrorShowcase
+            error="No models found"
+            subText="Create a model to get started"
+          />
         </div>
       </div>
     );
@@ -104,12 +114,10 @@ const ExplorePage = () => {
       <div className="explore-page-models-container">
         {filteredModels.length === 0 && searchTerm.trim() !== '' ? (
           <div className="explore-page-search-not-found">
-            <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
-              No Models Found
-            </div>
-            <div style={{ fontSize: '16px', color: '#666' }}>
-              No models match your search for "{searchTerm}"
-            </div>
+            <ErrorShowcase
+              error="No Models Found"
+              subText={`No models match your search for "${searchTerm}"`}
+            />
           </div>
         ) : (
           filteredModels.map((model) => (

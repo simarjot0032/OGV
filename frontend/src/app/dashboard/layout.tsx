@@ -14,7 +14,7 @@ export default function RootLayout({
     <div>
       <Navbar isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className="dashboard-container">
-        <Sidebar isOpen={isOpen} />
+        <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
         <div className="dashboard-content">{children}</div>
       </div>
     </div>

@@ -6,9 +6,10 @@ import { SideBarDataList } from '@/data/SideBarData';
 
 interface SidebarProps {
   isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
-export const Sidebar = ({ isOpen }: SidebarProps) => {
+export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
   return (
     <>
       <div
@@ -16,7 +17,12 @@ export const Sidebar = ({ isOpen }: SidebarProps) => {
       >
         <div className="sidebar-links">
           {SideBarDataList.map((item, index) => (
-            <Link href={item.link} key={index} className="sidebar-link">
+            <Link
+              href={item.link}
+              key={index}
+              className="sidebar-link"
+              onClick={() => setIsOpen(false)}
+            >
               <item.icon />
               <p className="sidebar-link-text">{item.title}</p>
             </Link>

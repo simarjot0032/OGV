@@ -15,6 +15,7 @@
     justify-content: space-between;
   }
   &-count-container {
+    margin-top: 10px;
     width: fit-content;
     background-color: $surface-color;
     padding: 10px 5px;
@@ -64,10 +65,48 @@
     border-radius: 5px;
     cursor: pointer;
   }
+  &-model-empty-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    flex-direction: column;
+    gap: 20px;
+  }
+  &-model-error-not-found-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #d0245e;
+  }
+  &-model-empty-button {
+    padding: 10px 20px;
+    background-color: #d0245e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  &-search-not-found {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  &-retry-button {
+    padding: 10px 20px;
+    background-color: #d0245e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
 }
 @media (min-width: $breakpoint-small) {
   .explore-page-models-container {
     justify-content: start;
     gap: 10px;
+  }
+  .explore-page-count-container {
+    margin-top: 0;
   }
 }
