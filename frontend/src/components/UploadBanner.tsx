@@ -8,6 +8,7 @@ import { PreviewIcon } from '@/icons/Preview.icon';
 import { FileInformationData } from '@/types';
 import { validateFileInformation } from '@/utils/FileUploadValidation';
 import { toast } from 'react-toastify';
+import { ModelPreviewModal } from './ModelPreviewModal';
 
 interface Props {
   fileInformation: FileInformationData;
@@ -15,6 +16,7 @@ interface Props {
 
 export const UploadBanner = ({ fileInformation }: Props) => {
   const [isUploading, setIsUploading] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
   const handleUpload = async () => {
     if (validateFileInformation(fileInformation)) {
       setIsUploading(true);
@@ -72,6 +74,13 @@ export const UploadBanner = ({ fileInformation }: Props) => {
       setIsUploading(false);
     }
   };
+  const handlePreview = () => {
+    if (!fileInformation.file) {
+      toast.error('Please upload a file first');
+      return;
+    }
+    setShowPreview(true);
+  };
 
   return (
     <div className="upload-banner">
@@ -83,7 +92,7 @@ export const UploadBanner = ({ fileInformation }: Props) => {
         <SecondaryButton
           label="Preview"
           className="preview-button"
-          onClick={() => {}}
+          onClick={handlePreview}
           icon={<PreviewIcon color="#000" className="svg-icon" />}
         />
         <PrimaryButton
@@ -93,6 +102,11 @@ export const UploadBanner = ({ fileInformation }: Props) => {
           icon={<UploadIcon color="#ffffff" />}
         />
       </div>
+      <ModelPreviewModal
+        isOpen={showPreview}
+        onClose={() => setShowPreview(false)}
+        file={fileInformation.file}
+      />
     </div>
   );
 };

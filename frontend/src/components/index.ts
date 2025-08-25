@@ -9,3 +9,4 @@ export { AdditionalFileInformation } from './AdditionalFileInformation';
 export { FileInformation } from './FileInformation';
 export { ModelCard } from './ModelCard';
 export { SearchBar } from './SearchBar';
+export { ModelPreviewModal } from './ModelPreviewModal';
