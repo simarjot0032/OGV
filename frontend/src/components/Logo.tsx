@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import logo from '@/assets/BRLCADLOGO.png';
-import '@/styles/Logo.scss';
+import logo from '@assets/BRLCADLOGO.png';
+import '@styles/Logo.scss';
 
 export const Logo = () => {
   return (

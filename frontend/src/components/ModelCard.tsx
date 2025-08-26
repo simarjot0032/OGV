@@ -1,7 +1,7 @@
 import React from 'react';
-import '@/styles/ModelCard.scss';
+import '@styles/ModelCard.scss';
 import Link from 'next/link';
-import { Paragraph } from '@/components';
+import { Paragraph } from '@components/common';
 
 interface Props {
   modelId: string;

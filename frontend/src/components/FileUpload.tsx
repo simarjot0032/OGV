@@ -1,12 +1,12 @@
 'use client';
 import React, { useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
-import '@/styles/FileUpload.scss';
-import { FileIcon, UploadIcon } from '@/icons';
-import { Paragraph, PrimaryButton, SecondaryButton } from './common';
-import { MaxFileSize, InputFormats } from '@/constants/FileFormats';
+import '@styles/FileUpload.scss';
+import { FileIcon, UploadIcon } from '@icons';
+import { Paragraph, PrimaryButton, SecondaryButton } from '@components/common';
+import { MaxFileSize, InputFormats } from '@constants/FileFormats';
 import { toast } from 'react-toastify';
-import { FileInformationData } from '@/types';
+import { FileInformationData } from '@app-types';
 
 interface Props {
   setFileInformation: (fileInformation: FileInformationData) => void;

@@ -1,5 +1,5 @@
 import React from 'react';
-import '@/styles/common/SecondaryButton.scss';
+import '@styles/common/SecondaryButton.scss';
 
 interface Props {
   label: string;

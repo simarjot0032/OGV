@@ -5,12 +5,12 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { Suspense, useState, useEffect } from 'react';
 import { Camera } from 'three';
 import { useParams } from 'next/navigation';
-import { cameraPresets, zoomPresets, scalePresets } from '@/constants';
-import '@/styles/ModelViewer.scss';
-import { Paragraph } from '@/components';
-import { getConvertedFileURL } from '@/utils/ConvertedFileURL';
-import { CrossIcon } from '@/icons/Cross.icon';
-import { SettingIcon } from '@/icons/Setting.icon';
+import { cameraPresets, zoomPresets, scalePresets } from '@constants';
+import '@styles/ModelViewer.scss';
+import { Paragraph } from '@components';
+import { getConvertedFileURL } from '@utils/ConvertedFileURL';
+import { CrossIcon } from '@icons/Cross.icon';
+import { SettingIcon } from '@icons/Setting.icon';
 
 function Model({ url, scale }: { url: string; scale: number }) {
   const obj = useLoader(OBJLoader, url);

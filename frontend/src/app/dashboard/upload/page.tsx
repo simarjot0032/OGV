@@ -7,12 +7,12 @@ import {
   UploadBanner,
   AdditionalFileInformation,
   FileInformation,
-} from '@/components';
-import '@/styles/Upload.scss';
+} from '@components';
+import '@styles/Upload.scss';
 import { ToastContainer } from 'react-toastify';
-import { OutputFormats } from '@/constants/FileFormats';
-import { useFileConverter } from '@/hooks/useFileConverter';
-import { FileInformationData } from '@/types';
+import { OutputFormats } from '@constants/FileFormats';
+import { useFileConverter } from '@hooks/useFileConverter';
+import { FileInformationData } from '@app-types';
 
 const UploadPage = () => {
   const [selectedFormats, setSelectedFormats] = useState<string[]>([]);

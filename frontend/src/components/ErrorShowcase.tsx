@@ -1,6 +1,6 @@
 import React from 'react';
 import { Paragraph } from './common';
-import '@/styles/ErrorShowcase.scss';
+import '@styles/ErrorShowcase.scss';
 
 interface Props {
   error: string;

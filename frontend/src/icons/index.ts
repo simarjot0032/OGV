@@ -1,5 +1,4 @@
 import { MouseEvent } from 'react';
-
 export { HamburgerIcon } from './Hamburger.icon';
 export { ExploreIcon } from './Explore.icon';
 export { UploadIcon } from './Upload.icon';

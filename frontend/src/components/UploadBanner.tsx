@@ -1,14 +1,13 @@
 'use client';
 import React, { useState } from 'react';
-import { Paragraph, Title } from './common';
-import '@/styles/UploadBanner.scss';
-import { PrimaryButton, SecondaryButton } from './common';
-import { UploadIcon } from '@/icons/Upload.icon';
-import { PreviewIcon } from '@/icons/Preview.icon';
-import { FileInformationData } from '@/types';
-import { validateFileInformation } from '@/utils/FileUploadValidation';
+import { Paragraph, Title } from '@components/common';
+import '@styles/UploadBanner.scss';
+import { PrimaryButton, SecondaryButton } from '@components/common';
+import { UploadIcon, PreviewIcon } from '@icons';
+import { FileInformationData } from '@app-types';
+import { validateFileInformation } from '@utils/FileUploadValidation';
 import { toast } from 'react-toastify';
-import { ModelPreviewModal } from './ModelPreviewModal';
+import { ModelPreviewModal } from '@components/ModelPreviewModal';
 
 interface Props {
   fileInformation: FileInformationData;
@@ -68,7 +67,7 @@ export const UploadBanner = ({ fileInformation }: Props) => {
           );
         }
       } catch (error) {
-        toast.error('Upload failed: ' + error);
+        toast.error('Upload failed: ' + String(error));
         console.error('Upload error:', error);
       }
       setIsUploading(false);

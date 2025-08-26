@@ -1,7 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import '@/styles/global.scss';
+import '@styles/global.scss';
 
 const DashboardPage = () => {
   const router = useRouter();
