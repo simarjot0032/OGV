@@ -1,7 +1,7 @@
 import React from 'react';
 import { Paragraph } from './common';
 import '@styles/FileInformation.scss';
-import { FileInformationData } from '@types';
+import { FileInformationData } from '@app-types';
 import { FileExipryCalculate } from '@utils/FileExipryCalculate';
 import { FileSize } from '@utils/FileSize';
 import { Licenses } from '@data/Licenses';
