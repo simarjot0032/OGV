@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
-import '@/styles/global.scss';
+import '@styles/global.scss';
+import '@styles/Home.scss';
+
 export const metadata: Metadata = {
   title: 'OGV',
   description: 'OGV by BRL-CAD',

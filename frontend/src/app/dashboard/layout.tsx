@@ -2,7 +2,6 @@
 import { Navbar } from '@/components/Navbar';
 import { Sidebar } from '@/components/Sidebar';
 import { useState } from 'react';
-import '@/styles/global.scss';
 
 export default function RootLayout({
   children,
