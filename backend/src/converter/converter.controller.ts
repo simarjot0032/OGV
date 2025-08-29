@@ -4,8 +4,8 @@ import { ConverterService } from './converter.service';
 import { multerConfig } from './config/multer.config';
 import { ConversionRequestDto } from './dto';
 import { Response } from 'express';
-import * as path from 'path';
 import * as fs from 'fs';
+import * as path from 'path';
 
 @Controller('converter')
 export class ConverterController {
@@ -20,7 +20,6 @@ export class ConverterController {
   ): Promise<void> {
     try {
       let outputFormats: string[];
-
       if (!body.outputFormat) {
         res.status(400).json({ message: 'outputFormat is required' });
         return;
@@ -28,7 +27,7 @@ export class ConverterController {
 
       if (typeof body.outputFormat === 'string') {
         try {
-          const parsed = JSON.parse(body.outputFormat) as unknown;
+          const parsed = JSON.parse(body.outputFormat) as string[];
           if (Array.isArray(parsed) && parsed.every((f) => typeof f === 'string')) {
             outputFormats = parsed.map((format) => format.toLowerCase());
           } else {
@@ -44,69 +43,36 @@ export class ConverterController {
         return;
       }
 
-      this.converterService.validateMultipleFormats(file, outputFormats);
-
       const result = await this.converterService.convertToMultipleFormats(file, outputFormats);
-
       try {
         fs.unlinkSync(file.path);
-        console.log(`🗑️ Deleted input file: ${file.path}`);
-      } catch (deleteError) {
-        console.error('Failed to delete input file:', deleteError);
+      } catch (err) {
+        console.error('Failed to delete input file:', err);
       }
 
       if (!result.success) {
-        res.status(500).json({ message: result.message || 'Conversion failed' });
+        res.status(500).json({ message: result.error || 'Conversion failed' });
         return;
       }
 
-      if (result.files.length === 1) {
-        const convertedFile = result.files[0];
-        res.download(convertedFile.path, convertedFile.filename, (err) => {
+      if (result.filePath) {
+        const filename = path.basename(result.filePath);
+        res.download(result.filePath, filename, (err) => {
           if (err) {
             console.error('Download error:', err);
-            res.status(500).send('Failed to send the converted file.');
+            res.status(500).send('Failed to send converted file.');
           } else {
             try {
-              fs.unlinkSync(convertedFile.path);
-              console.log(`🗑️ Deleted file: ${convertedFile.path}`);
-            } catch (deleteError) {
-              console.error('Failed to delete file:', deleteError);
+              if (result.filePath) {
+                fs.unlinkSync(result.filePath);
+              }
+            } catch (deleteErr) {
+              console.error('Failed to delete converted file:', deleteErr);
             }
           }
         });
       } else {
-        const originalFileName = file.originalname;
-        const fileNameWithoutExtension = path.basename(
-          originalFileName,
-          path.extname(originalFileName)
-        );
-
-        const zipPath = await this.converterService.createZipFile(
-          result.files,
-          fileNameWithoutExtension
-        );
-
-        res.download(zipPath, `${fileNameWithoutExtension}_converted.zip`, (err) => {
-          if (err) {
-            console.error('Download error:', err);
-            res.status(500).send('Failed to send the zip file.');
-          } else {
-            try {
-              fs.unlinkSync(zipPath);
-
-              result.files.forEach((file) => {
-                try {
-                  fs.unlinkSync(file.path);
-                } catch (deleteError) {
-                  console.error('Failed to delete file:', deleteError);
-                }
-              });
-            } catch (deleteError) {
-              console.error('Failed to delete zip file:', deleteError);
-            }
-          }
-        });
+        res.status(500).json({ message: 'No output file path returned' });
       }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Unexpected error';

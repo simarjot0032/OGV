@@ -9,7 +9,6 @@ import { ConverterService } from 'src/converter/converter.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as fs from 'fs';
 import * as path from 'path';
-import { spawn } from 'child_process';
 import { StorageConfig } from 'src/config/storage.config';
 import { UploadedFile } from 'src/types/UploadedFile';
 import { FileURL } from 'src/types/FileURL';
@@ -20,55 +19,6 @@ export class UploadService {
     private readonly converterService: ConverterService,
     private readonly prisma: PrismaService
   ) {}
-
-  async convertFileToObj(
-    file: Express.Multer.File
-  ): Promise<{ success: boolean; outputPath?: string; error?: string }> {
-    try {
-      const outputDir = StorageConfig.CONVERTED_TO_OBJ_PATH;
-      fs.mkdirSync(outputDir, { recursive: true });
-
-      const fileNameWithoutExt = path.basename(file.originalname, path.extname(file.originalname));
-      const outputPath = path.join(outputDir, `${fileNameWithoutExt}.obj`);
-
-      return new Promise((resolve) => {
-        const gcv = spawn('gcv', [file.path, outputPath]);
-        let stderr = '';
-
-        gcv.stderr.on('data', (data: Buffer) => {
-          stderr += data.toString();
-        });
-
-        gcv.on('error', (error) => {
-          console.error('GCV spawn error:', error);
-          resolve({
-            success: false,
-            error: `Failed to start GCV: ${error.message}`,
-          });
-        });
-
-        gcv.on('close', (code) => {
-          if (code === 0 && fs.existsSync(outputPath)) {
-            resolve({
-              success: true,
-              outputPath,
-            });
-          } else {
-            resolve({
-              success: false,
-              error: `GCV conversion failed: ${stderr}`,
-            });
-          }
-        });
-      });
-    } catch (error) {
-      console.error('Conversion error:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown conversion error',
-      };
-    }
-  }
 
   validateRequest(request: UploadRequestDto) {
     if (!request.file) {
@@ -206,16 +156,13 @@ export class UploadService {
     };
 
     if (!isAlreadyObjFormat) {
+      const conversionResult = await this.converterService.convertToMultipleFormats(file, ['obj']);
       try {
-        const conversionResult = await this.convertFileToObj(file);
-
-        if (conversionResult.success && conversionResult.outputPath) {
-          console.log('Conversion successful, uploading converted file...');
-
+        if (conversionResult.success) {
           const convertedFileForUpload: Express.Multer.File = {
             ...file,
-            path: conversionResult.outputPath,
-            originalname: path.basename(conversionResult.outputPath),
+            path: conversionResult.filePath,
+            originalname: path.basename(conversionResult.filePath),
             mimetype: 'application/octet-stream',
           };
 
@@ -241,7 +188,7 @@ export class UploadService {
               'Failed to upload converted .obj file to cloud storage',
               {
                 originalFile: file.originalname,
-                convertedFile: path.basename(conversionResult.outputPath),
+                convertedFile: path.basename(conversionResult.filePath),
                 cloudinaryResponse: uploadResult,
               }
             );
