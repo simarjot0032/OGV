@@ -1,6 +1,3 @@
-@use './Variables' as *;
-@use './_Mixins.scss' as *;
-
 #particles {
   position: absolute;
   top: 0;
@@ -19,25 +16,23 @@
 
 .hero {
   &-container {
-    @include flex(column, center, center, nowrap, 0);
+    @include flex($direction: column, $justifyContent: center, $alignItems: center, $wrap: nowrap);
     height: 82vh;
     position: relative;
     overflow: hidden;
   }
   &-content {
-    @include flex(column, center, center, nowrap, 0);
+    @include flex($direction: column, $justifyContent: center, $alignItems: center, $wrap: nowrap);
   }
   &-title {
     color: $primary-color;
-    font-weight: 700;
-    font-size: clamp(2.9rem, 5vw, 4rem);
+    @include font($fontSize: clamp(2.9rem, 5vw, 4rem), $fontWeight: 700);
     text-align: center;
   }
   &-paragraph {
     color: $text-accent-color;
     text-align: center;
-    font-weight: 400;
-    font-size: clamp(1.3rem, 2vw, 1.5rem);
+    @include font($fontSize: clamp(1.3rem, 2vw, 1.5rem), $fontWeight: 400);
   }
   &-button {
     margin-top: 16px;
@@ -45,39 +40,37 @@
   }
 }
 .home-container {
-  @include flex(column, center, center, nowrap, 30px);
+  @include flex($direction: column, $justifyContent: center, $alignItems: center, $wrap: nowrap, $gap: 30px);
   margin-top: 50px;
 }
 .features {
   &-title {
     color: $text-color;
-    font-weight: 500;
-    font-size: clamp(2.2rem, 5vw, 2.8em);
+    @include font($fontSize: clamp(2.2rem, 5vw, 2.8em), $fontWeight: 500);
     text-align: center;
     max-width: 1000px;
   }
   &-cards {
-    @include flex(row, center, stretch, wrap, 16px);
+    @include flex($direction: row, $justifyContent: center, $alignItems: stretch, $wrap: wrap, $gap: 16px);
     width: 100%;
     padding: 10px;
   }
 }
 .how-to-use {
   &-container {
-    @include flex(column, center, center, nowrap, 20px);
+    @include flex($direction: column, $justifyContent: center, $alignItems: center, $wrap: nowrap, $gap: 20px);
     transform-origin: center;
     will-change: transform;
     overflow: hidden;
   }
   &-title {
     color: $text-color;
-    font-weight: 500;
-    font-size: clamp(2.2rem, 5vw, 2.8rem);
+    @include font($fontSize: clamp(2.2rem, 5vw, 2.8rem), $fontWeight: 500);
     text-align: center;
     margin-bottom: 20px;
   }
   &-video-container {
-    @include flex(column, center, center, nowrap, 0);
+    @include flex($direction: column, $justifyContent: center, $alignItems: center, $wrap: nowrap, $gap: 0);
     transform-origin: center;
     will-change: transform;
   }
@@ -91,21 +84,20 @@
 
 .faq {
   &-container {
-    @include flex(column, center, stretch, nowrap, 20px);
+    @include flex($direction: column, $justifyContent: center, $alignItems: stretch, $wrap: nowrap, $gap: 20px);
     max-width: 1000px;
     padding: 10px;
   }
   &-title {
     color: $text-color;
-    font-weight: 500;
-    font-size: clamp(2rem, 5vw, 2.5rem);
+    @include font($fontSize: clamp(2rem, 5vw, 2.5rem), $fontWeight: 500);
     text-align: center;
   }
 }
 @media (min-width: $breakpoint-small) {
     .features {
       &-cards {
-        @include flex(row, center, stretch, wrap, 30px);
+        @include flex($direction: row, $justifyContent: center, $alignItems: stretch, $wrap: wrap, $gap: 30px);
         margin-top: 20px;
       }
   }

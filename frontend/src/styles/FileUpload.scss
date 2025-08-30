@@ -1,23 +1,14 @@
-@use '@/styles/global.scss' as *;
-
 .file-upload {
   &-container {
     border: 1px dashed black;
     border-radius: $border-radius;
     padding: 16px;
     min-height: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    @include flex($direction: column, $alignItems: center, $justifyContent: center);
     text-align: center;
   }
   &-dropzone {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+    @include flex($direction: column, $alignItems: center, $justifyContent: center, $gap: 10px);
     width: 100%;
     height: 100%;
     cursor: pointer;
@@ -29,17 +20,14 @@
     }
   }
   &-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex($alignItems: center, $justifyContent: center);
   }
   &-label-text {
-    font-size: 1.5rem;
+    @include font($fontSize: 1.5rem);
   }
   &-label-subtext {
-    font-size: 1rem;
+    @include font($fontSize: 1rem, $fontWeight: 400);
     color: $text-secondary-color;
-    font-weight: 400;
   }
   &-button,
   &-reset-button {

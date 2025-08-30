@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import '@styles/global.scss';
-import '@styles/Home.scss';
+import '@/styles/index.scss';
 
 export const metadata: Metadata = {
   title: 'OGV',

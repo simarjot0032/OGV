@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 import React from 'react';
-import '@styles/Sidebar.scss';
 import { SideBarDataList } from '@data/SideBarData';
 
 interface SidebarProps {

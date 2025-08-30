@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import { Paragraph, Title } from '@components/common';
-import '@styles/UploadBanner.scss';
 import { PrimaryButton, SecondaryButton } from '@components/common';
 import { UploadIcon, PreviewIcon } from '@icons';
 import { FileInformationData } from '@app-types';

@@ -1,8 +1,5 @@
-@use '@styles/Variables.scss' as *;
-@use '@styles/Mixins.scss' as *;
-
 .feature-card {
-  @include flex(column, flex-start, stretch, nowrap, 0);
+  @include flex($direction: column, $justifyContent: flex-start, $alignItems: stretch, $wrap: nowrap);
   padding: 16px;
   border-radius: $border-radius;
   background-color: $surface-color;
@@ -10,18 +7,15 @@
   width: 100%;
 
   &-title {
-    font-size: 1.5rem;
-    font-weight: 500;
+    @include font($fontSize: 1.5rem, $fontWeight: 500);
     color: $primary-color;
   }
   &-description {
-    font-size: 1rem;
-    font-weight: 400;
+    @include font($fontSize: 1rem, $fontWeight: 400);
     flex-grow: 1;
   }
   &-index {
-    font-size: 1rem;
-    font-weight: 400;
+    @include font($fontSize: 1rem, $fontWeight: 400); 
     background: $primary-color;
     color: $text-accent-color;
     padding: 15px 20px;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Heading, Paragraph } from '@components';
-import '@styles/common/FeatureCard.scss';
 
 interface FeatureCardProps {
   title: string;

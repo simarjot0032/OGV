@@ -1,6 +1,5 @@
 'use client';
 import { Logo, Paragraph } from '@components';
-import '@styles/Footer.scss';
 import Link from 'next/link';
 import { LinksHomeData } from '@/data/LinksHomeData';
 import { FooterData } from '@/data/Footer';

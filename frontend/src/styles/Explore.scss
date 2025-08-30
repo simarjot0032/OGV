@@ -1,18 +1,11 @@
-@use './_Variables' as *;
-
 .explore-page {
   padding: 20px;
   &-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    @include flex($wrap: wrap, $gap: 10px);
   }
   &-header {
     width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
+    @include flex($wrap: wrap, $alignItems: center, $justifyContent: space-between);
   }
   &-count-container {
     margin-top: 10px;
@@ -22,40 +15,23 @@
     border-radius: $border-radius;
     border: 1px solid $border-color;
     width: fit-content;
-    font-size: 1rem;
-    font-weight: 400;
+    @include font($fontSize: 1rem, $fontWeight: 400);
   }
   &-models-container {
     margin-top: 20px;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    @include flex($justifyContent: center, $alignItems: center, $wrap: wrap, $gap: 10px);
   }
   &-search-not-found {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    @include flex($direction: column, $alignItems: center, $justifyContent: center, $gap: 20px);
     height: 40vh;
-    gap: 20px;
   }
   &-model-loading-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex($direction: column, $justifyContent: center, $alignItems: center, $gap: 20px);
     height: 50vh;
-    flex-direction: column;
-    gap: 20px;
   }
   &-model-loading-error-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex($direction: column, $justifyContent: center, $alignItems: center, $gap: 20px);
     height: 50vh;
-    flex-direction: column;
-    gap: 20px;
   }
   &-model-loading-error {
     padding: 10px 20px;
@@ -66,16 +42,13 @@
     cursor: pointer;
   }
   &-model-empty-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex($justifyContent: center, $alignItems: center);
     height: 50vh;
-    flex-direction: column;
+    @include flex($direction: column, $alignItems: center, $justifyContent: center);
     gap: 20px;
   }
   &-model-error-not-found-text {
-    font-size: 1.5rem;
-    font-weight: 600;
+    @include font($fontSize: 1.5rem, $fontWeight: 600);
     color: #d0245e;
   }
   &-model-empty-button {
@@ -87,11 +60,8 @@
     cursor: pointer;
   }
   &-search-not-found {
-    display: flex;
-    flex-direction: column;
+    @include flex($direction: column, $alignItems: center, $justifyContent: center);
     width: 100%;
-    align-items: center;
-    justify-content: center;
   }
   &-retry-button {
     padding: 10px 20px;

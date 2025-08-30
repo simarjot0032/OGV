@@ -1,5 +1,3 @@
-@use './Variables' as *;
-
 .sidebar {
   &-container-closed,
   &-large {
@@ -17,19 +15,15 @@
     z-index: 1000;
   }
   &-links {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    @include flex($direction: column, $gap: 16px);
   }
   &-link {
-    display: flex;
-    align-items: center;
+    @include flex($alignItems: center, $gap: 8px);
     cursor: pointer;
     padding: 5px;
-    gap: 8px;
     text-decoration: none;
     color: $text-color;
-    font-size: 18px;
+    @include font($fontSize: 18px);
     transition: all 0.3s linear;
   }
   &-link:hover {

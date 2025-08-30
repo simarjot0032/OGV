@@ -6,9 +6,7 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex($justifyContent: center, $alignItems: center);
     z-index: 1000;
     backdrop-filter: blur(5px);
   }
@@ -19,23 +17,20 @@
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     width: 95vw;
     height: 95vh;
-    display: flex;
-    flex-direction: column;
+    @include flex($direction: column);
     overflow: hidden;
     animation: modalSlideIn 0.3s ease-out;
   }
 
   &-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @include flex($justifyContent: space-between, $alignItems: center);
     padding: 16px 20px;
     border-bottom: 1px solid #e5e5e5;
     background: #fafafa;
 
     h3 {
       margin: 0;
-      font-size: 1.3rem;
+      @include font($fontSize: 1.3rem, $fontWeight: 600);
       font-weight: 600;
       color: #333;
     }
@@ -54,23 +49,19 @@
 
   &-modal-content {
     flex: 1;
-    display: flex;
-    flex-direction: column;
+    @include flex($direction: column);
     padding: 16px;
     overflow: hidden;
   }
 
   &-loading,
   &-error {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    @include flex($direction: column, $justifyContent: center, $alignItems: center);
     height: 100%;
     text-align: center;
 
     p {
-      font-size: 1.1rem;
+      @include font($fontSize: 1.1rem);
       color: #666;
       margin-bottom: 20px;
     }
@@ -82,7 +73,7 @@
     border: none;
     padding: 12px 24px;
     border-radius: 6px;
-    font-size: 1rem;
+    @include font($fontSize: 1rem);
     cursor: pointer;
     transition: background-color 0.2s ease;
 
@@ -100,27 +91,24 @@
   }
 
   &-control-row {
-    display: flex;
-    flex-direction: column;
+    @include flex($direction: column);
     gap: 16px;
     align-items: stretch;
   }
 
   &-scale-control {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    @include flex($direction: column, $alignItems: stretch);
     gap: 8px;
     min-width: auto;
 
     label {
-      font-weight: 500;
+      @include font($fontWeight: 500);
       color: #495057;
       min-width: auto;
     }
 
     span {
-      font-weight: 500;
+      @include font($fontWeight: 500);
       color: #6c757d;
       min-width: auto;
       text-align: left;
@@ -128,8 +116,7 @@
   }
 
   &-grid-control {
-    display: flex;
-    flex-direction: column;
+    @include flex($direction: column);
     align-items: stretch;
     gap: 8px;
     min-width: auto;
@@ -141,7 +128,7 @@
     background: transparent;
     color: #d0245e;
     border-radius: 6px;
-    font-weight: 600;
+    @include font($fontWeight: 600);
     cursor: pointer;
     transition: all 0.2s ease;
     min-width: 60px;
@@ -212,11 +199,11 @@
 
     p {
       margin: 4px 0;
-      font-size: 0.9rem;
+      @include font($fontSize: 0.9rem);
       color: #1976d2;
 
       &:first-child {
-        font-weight: 600;
+        @include font($fontWeight: 600);
         margin-bottom: 8px;
       }
     }
@@ -244,14 +231,14 @@
     }
 
     &-control-row {
-      flex-direction: row;
+      @include flex($direction: row);
       gap: 20px;
       align-items: center;
       flex-wrap: wrap;
     }
 
     &-scale-control {
-      flex-direction: row;
+      @include flex($direction: row);
       align-items: center;
       gap: 12px;
       flex: 1;
@@ -268,8 +255,7 @@
     }
 
     &-grid-control {
-      flex-direction: row;
-      align-items: center;
+      @include flex($direction: row, $alignItems: center);
       gap: 12px;
       min-width: 120px;
     }

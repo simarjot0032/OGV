@@ -1,10 +1,6 @@
-@use '@/styles/global.scss' as *;
-
 .logo {
   &-container {
-    display: flex;
-    align-items: center;
-    gap: 2px;
+    @include flex($alignItems: center, $gap: 2px);
     position: relative;
     width: fit-content;
     height: fit-content;
@@ -15,7 +11,7 @@
     color: $text-color;
   }
   &-heading {
-    font-size: 2rem;
+    @include font($fontSize: 2rem);
   }
   &-image {
     position: absolute;
@@ -27,6 +23,6 @@
 }
 @media (min-width: $breakpoint-small) {
   .logo-heading {
-    font-size: 2.5rem;
+    @include font($fontSize: 2.5rem);
   }
 }

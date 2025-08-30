@@ -1,5 +1,4 @@
 import React from 'react';
-import '@styles/common/Heading.scss';
 
 interface Props {
   title: string;

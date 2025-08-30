@@ -1,5 +1,4 @@
 import React from 'react';
-import '@styles/common/Paragraph.scss';
 
 interface Props {
   paragraph: string;

@@ -1,16 +1,13 @@
-@use '../_Variables.scss' as *;
-@use '../_Mixins.scss' as *;
-
 .faq {
   &-container {
-    @include flex(column, center, center, nowrap, 20);
+    @include flex($direction: column, $justifyContent: center, $alignItems: center, $wrap: nowrap, $gap: 20);
     width: 100%;
   }
   &-items {
     width: 100%;
   }
   &-item {
-    @include flex(row, space-between, center, nowrap, 10);
+    @include flex($direction: row, $justifyContent: space-between, $alignItems: center, $wrap: nowrap, $gap: 10);
     width: 100%;
     padding: 10px;
     border-bottom: 1px solid $border-color;
@@ -18,13 +15,11 @@
     cursor: pointer;
   }
   &-answer {
-    font-size: 1rem;
-    font-weight: 400;
+    @include font($fontSize: 1rem, $fontWeight: 400);
     padding: 10px;
   }
   &-question {
-    font-size: 1.2rem;
-    font-weight: 500;
+    @include font($fontSize: 1.2rem, $fontWeight: 500);
   }
   &-icon {
     &-button {

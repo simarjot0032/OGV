@@ -5,7 +5,6 @@ import { OrbitControls, Grid } from '@react-three/drei';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { CrossIcon } from '@icons/Cross.icon';
 import { Paragraph } from '@components/common';
-import '@styles/ModelPreviewModal.scss';
 
 interface ModelPreviewModalProps {
   isOpen: boolean;

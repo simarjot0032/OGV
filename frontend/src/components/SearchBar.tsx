@@ -1,5 +1,4 @@
 import React from 'react';
-import '@styles/SearchBar.scss';
 import { SearchIcon } from '@icons';
 
 interface SearchBarProps {

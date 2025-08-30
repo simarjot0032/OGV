@@ -1,17 +1,12 @@
-@use './_Variables' as *;
-
 .search-bar {
   padding: 10px 5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include flex($alignItems: center, $justifyContent: space-between);
   width: 100%;
   border-radius: $border-radius;
   border: 1px solid $border-color;
   outline: none;
-  font-size: 1rem;
+  @include font($fontSize: 1rem, $fontWeight: 400);
   padding-left: 10px;
-  font-weight: 400;
   color: $text-color;
   background-color: $surface-color;
 }

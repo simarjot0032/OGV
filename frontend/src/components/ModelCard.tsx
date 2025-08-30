@@ -1,5 +1,4 @@
 import React from 'react';
-import '@styles/ModelCard.scss';
 import Link from 'next/link';
 import { Paragraph } from '@components/common';
 

@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import logo from '@assets/BRLCADLOGO.png';
-import '@styles/Logo.scss';
 import Link from 'next/link';
 
 export const Logo = () => {

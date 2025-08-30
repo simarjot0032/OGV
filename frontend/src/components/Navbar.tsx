@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import { Logo } from './Logo';
-import '@styles/Navbar.scss';
 import { HamburgerIcon } from '@icons/Hamburger.icon';
 import { CrossIcon } from '@icons/Cross.icon';
 

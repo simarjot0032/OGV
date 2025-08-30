@@ -4,7 +4,6 @@ import { ModelCard, Paragraph, SearchBar } from '@/components';
 import ErrorShowcase from '@/components/ErrorShowcase';
 import { ModelData, ModelsApiResponse } from '@/types/ModelData';
 import { FileSize } from '@/utils/FileSize';
-import '@/styles/Explore.scss';
 
 const ExplorePage = () => {
   const [models, setModels] = useState<ModelData[]>([]);

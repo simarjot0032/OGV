@@ -1,16 +1,10 @@
-@use '@/styles/global.scss' as *;
-
 .file-main-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  @include flex($direction: column, $gap: 16px);
   padding: 16px;
 }
 .upload {
   &-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    @include flex($direction: column, $gap: 16px);
   }
   &-file-container-background {
     width: 100%;
@@ -28,14 +22,10 @@
     margin: 10px 0;
   }
   &-file-container-checkbox {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
+    @include flex($wrap: wrap, $gap: 16px);
   }
   &-file-container-checkbox-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    @include flex($alignItems: center, $gap: 8px);
     input {
       width: 16px;
       height: 16px;
@@ -57,7 +47,7 @@
 
 @media (min-width: $breakpoint-medium) {
   .file-main-container {
-    flex-direction: row;
+    @include flex($direction: row);
   }
   .upload-container {
     min-width: 65%;

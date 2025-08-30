@@ -1,8 +1,4 @@
-@use '@/styles/global.scss' as *;
-
 .paragraph-default {
-  font-size: 16px;
-  font-weight: 400;
-
+  @include font($fontSize: 16px, $fontWeight: 400);
   margin: 0;
 }

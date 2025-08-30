@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Heading, Paragraph } from '@components/common';
-import '@styles/common/FAQ.scss';
 import { CrossIcon, PlusIcon } from '@/icons';
 
 interface FAQProps {

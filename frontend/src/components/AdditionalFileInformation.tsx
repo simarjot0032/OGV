@@ -1,7 +1,6 @@
 'use client';
 import React, { useRef, useState } from 'react';
 import { Paragraph } from './common';
-import '@styles/AdditionalFileInformation.scss';
 import { FileIcon } from '@icons/File.icon';
 import { FileInformationData } from '@app-types';
 import { ModelCategory } from '@data/ModelCategory';

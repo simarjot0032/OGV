@@ -1,9 +1,5 @@
-@use './Variables' as *;
-
 .navbar-container {
-  display: flex;
-  gap: 16px;
-  align-items: center;
+  @include flex($gap: 16px, $alignItems: center);
   padding: 10px 16px;
   border-bottom: 1px solid $border-color;
   background-color: $surface-color;

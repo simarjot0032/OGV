@@ -1,6 +1,5 @@
 'use client';
 import { Logo } from '@components/Logo';
-import '@styles/NavbarHome.scss';
 import { HamburgerRightIcon } from '@icons/HamburgerRight.icon';
 import { LinksHomeData } from '@/data/LinksHomeData';
 import Link from 'next/link';

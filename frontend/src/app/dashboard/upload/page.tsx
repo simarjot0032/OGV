@@ -8,7 +8,6 @@ import {
   AdditionalFileInformation,
   FileInformation,
 } from '@components';
-import '@styles/Upload.scss';
 import { ToastContainer } from 'react-toastify';
 import { OutputFormats } from '@constants/FileFormats';
 import { useFileConverter } from '@hooks/useFileConverter';
