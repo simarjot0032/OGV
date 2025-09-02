@@ -1,28 +1,15 @@
 'use client';
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
-import { Canvas, useLoader } from '@react-three/fiber';
-import { OrbitControls, Grid } from '@react-three/drei';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { CrossIcon } from '@icons/Cross.icon';
 import { Paragraph } from '@components/common';
+import { ModelViewer } from 'ogv-viewer-package';
+import 'ogv-viewer-package/dist/index.css';
+
 
 interface ModelPreviewModalProps {
   isOpen: boolean;
   onClose: () => void;
   file: File | null;
-}
-
-function Model({ url, scale }: { url: string; scale: number }) {
-  const obj = useLoader(OBJLoader, url);
-
-  return (
-    <primitive
-      object={obj}
-      scale={[scale, scale, scale]}
-      position={[0, 0, 0]}
-      rotation={[-Math.PI / 2, 0, 0]}
-    />
-  );
 }
 
 export const ModelPreviewModal: React.FC<ModelPreviewModalProps> = ({
@@ -34,7 +21,6 @@ export const ModelPreviewModal: React.FC<ModelPreviewModalProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');
   const [modelScale, setModelScale] = useState(0.02);
-  const [showGrid, setShowGrid] = useState(true);
 
   const convertAndPreview = useCallback(async () => {
     if (!file) return;
@@ -135,67 +121,16 @@ export const ModelPreviewModal: React.FC<ModelPreviewModalProps> = ({
                     />
                     <Paragraph paragraph={modelScale.toFixed(3)} />
                   </div>
-                  <div className="model-preview-grid-control">
-                    <Paragraph paragraph="Grid:" />
-                    <button
-                      onClick={() => setShowGrid(!showGrid)}
-                      className={`model-preview-grid-toggle ${showGrid ? 'active' : ''}`}
-                    >
-                      {showGrid ? 'ON' : 'OFF'}
-                    </button>
-                  </div>
                 </div>
               </div>
 
               <div className="model-preview-canvas-container">
-                <Canvas
-                  camera={{ position: [0.5, 0.5, 0.5], fov: 75 }}
-                  className="model-preview-canvas"
-                  style={{ background: '#f0f0f0' }}
-                >
-                  <ambientLight intensity={0.6} />
-                  <directionalLight position={[10, 10, 5]} intensity={1.2} />
-                  <directionalLight position={[-10, -10, -5]} intensity={0.8} />
-
-                  {showGrid && (
-                    <Grid
-                      args={[10, 10]}
-                      cellSize={1}
-                      cellThickness={0.5}
-                      cellColor="#6f6f6f"
-                      sectionSize={5}
-                      sectionThickness={1}
-                      sectionColor="#9d4b4b"
-                      fadeDistance={30}
-                      fadeStrength={1}
-                      followCamera={false}
-                      infiniteGrid={true}
-                    />
-                  )}
-
-                  <Suspense fallback={null}>
-                    <Model url={modelUrl} scale={modelScale} />
-                  </Suspense>
-
-                  <OrbitControls
-                    enablePan={true}
-                    enableZoom={true}
-                    enableRotate={true}
-                    minDistance={0.05}
-                    maxDistance={100}
-                    rotateSpeed={0.8}
-                    panSpeed={0.8}
-                    zoomSpeed={1.2}
-                    dampingFactor={0.05}
-                    enableDamping={true}
-                    keyPanSpeed={10}
-                    screenSpacePanning={true}
-                    maxPolarAngle={Math.PI}
-                    minPolarAngle={0}
-                    maxAzimuthAngle={Infinity}
-                    minAzimuthAngle={-Infinity}
-                  />
-                </Canvas>
+                <ModelViewer
+                  url={modelUrl}
+                  initialScale={0.02}
+                  initialZoom={8}
+                  showSettings={false}
+                />
               </div>
 
               <div className="model-preview-instructions">
