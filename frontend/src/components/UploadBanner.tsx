@@ -7,6 +7,8 @@ import { FileInformationData } from '@app-types';
 import { validateFileInformation } from '@utils/FileUploadValidation';
 import { toast } from 'react-toastify';
 import { ModelPreviewModal } from '@components/ModelPreviewModal';
+import { Uploading } from './common/Uploading';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   fileInformation: FileInformationData;
@@ -15,9 +17,18 @@ interface Props {
 export const UploadBanner = ({ fileInformation }: Props) => {
   const [isUploading, setIsUploading] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [error, setError] = useState('');
+  const [uploadId, setUploadId] = useState('');
+  const router = useRouter();
+
   const handleUpload = async () => {
     if (validateFileInformation(fileInformation)) {
       setIsUploading(true);
+      setIsCompleted(false);
+      setIsError(false);
+      setError('');
       try {
         const url = process.env.NEXT_PUBLIC_UPLOAD_URL;
         const ipResponse = await fetch('https://api.ipify.org?format=json');
@@ -49,27 +60,30 @@ export const UploadBanner = ({ fileInformation }: Props) => {
           if (response.ok) {
             const result = await response.json();
             if (result.success) {
+              setUploadId(result.data.id);
               toast.success('File uploaded successfully!');
               console.log('Upload successful:', result);
+              setIsCompleted(true);
             } else {
               toast.error('Upload failed: ' + result.error);
               console.error('Upload failed:', result);
+              setIsError(true);
+              setError('Upload failed');
             }
           } else {
             const error = await response.text();
-            toast.error('Upload failed: ' + error);
-            console.error('Upload failed:', error);
+            setIsError(true);
+            setError(error);
           }
         } else {
-          toast.error(
-            'We are facing some issues with the server. Please try again later.'
-          );
+          setIsError(true);
+          setError('An unknown error occurred. Please try again later.');
         }
       } catch (error) {
-        toast.error('Upload failed: ' + String(error));
-        console.error('Upload error:', error);
+        setIsError(true);
+        setError('Upload failed: ' + String(error));
       }
-      setIsUploading(false);
+      setIsCompleted(true);
     }
   };
   const handlePreview = () => {
@@ -105,6 +119,28 @@ export const UploadBanner = ({ fileInformation }: Props) => {
         onClose={() => setShowPreview(false)}
         file={fileInformation.file}
       />
+
+      {(isUploading || isCompleted || isError) && (
+        <Uploading
+          isUploading={isUploading}
+          isCompleted={isCompleted}
+          isError={isError}
+          error={error}
+          fileName={fileInformation.file?.name || 'File'}
+          onViewFile={() => {
+            if (uploadId) {
+              router.push(`/dashboard/modelviewer/${uploadId}`);
+            }
+          }}
+          onCopyLink={async () => {
+            if (uploadId) {
+              await navigator.clipboard.writeText(
+                `${window.location.origin}/dashboard/modelviewer/${uploadId}`
+              );
+            }
+          }}
+        />
+      )}
     </div>
   );
 };
