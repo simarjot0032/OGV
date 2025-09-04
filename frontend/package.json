@@ -11,8 +11,6 @@
   "dependencies": {
     "@react-three/drei": "^9.88.0",
     "@react-three/fiber": "^8.0.0",
-    "@tsparticles/engine": "^3.9.1",
-    "@tsparticles/react": "^3.0.0",
     "@types/three": "^0.179.0",
     "framer-motion": "^12.23.12",
     "next": "15.3.4",
@@ -22,8 +20,7 @@
     "react-dropzone": "^14.3.8",
     "react-toastify": "^11.0.5",
     "sass": "^1.52.2",
-    "three": "^0.179.1",
-    "tsparticles": "^3.9.1"
+    "three": "^0.179.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

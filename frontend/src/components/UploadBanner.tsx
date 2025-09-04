@@ -20,7 +20,7 @@ export const UploadBanner = ({ fileInformation }: Props) => {
   const [isCompleted, setIsCompleted] = useState(false);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState('');
-  const [uploadId, setUploadId] = useState('');
+  const [uploadId, setUploadId] = useState<any | null>(null);
   const router = useRouter();
 
   const handleUpload = async () => {
