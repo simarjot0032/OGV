@@ -4630,9 +4630,9 @@ object-inspect@^1.13.3:
   resolved "https://registry.npmjs.org/object-inspect/-/object-inspect-1.13.4.tgz"
   integrity sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==
 
-"ogv-conversation-package@https://github.com/simarjot0032/ogv-conversation-package.git":
+"ogv-conversation-package@https://github.com/simarjot0032/gcv-conversion-module.git":
   version "1.0.0"
-  resolved "https://github.com/simarjot0032/ogv-conversation-package.git#46cb9d823dac01c7f6c8f66e765557c07be4f9a9"
+  resolved "https://github.com/simarjot0032/gcv-conversion-module.git#fe4eb082e9322411f4ab8a54acdc5a68914a6ac9"
   dependencies:
     archiver "^7.0.1"
 
