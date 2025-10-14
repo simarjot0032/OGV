@@ -1,0 +1,4 @@
+{
+    "buildCommand": "yarn cache clean --all && yarn install && yarn run build"
+  }
+  
