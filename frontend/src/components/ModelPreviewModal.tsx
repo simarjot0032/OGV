@@ -1,10 +1,9 @@
 'use client';
-import React, { useState, useEffect, Suspense, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { CrossIcon } from '@icons/Cross.icon';
 import { Paragraph } from '@components/common';
 import { ModelViewer } from 'ogv-viewer-package';
 import 'ogv-viewer-package/dist/index.css';
-
 
 interface ModelPreviewModalProps {
   isOpen: boolean;
