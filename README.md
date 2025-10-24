@@ -10,6 +10,9 @@ Online Geometry Viewer is an online web application where users can upload, view
 - **Real-time 3D Viewer**: Interactive 3D model visualization using Three.js
 - **File Conversion**: Automatic conversion of CAD files to web-compatible formats
 - **File Management**: Organized storage with expiration policies
+- **Supported Formats**: Various CAD file formats (converted to web-compatible formats)
+- **Automatic Conversion**: BRL-CAD powered geometry conversion
+- **Thumbnail Generation**: Automatic preview generation for uploaded models
 
 ## 🏗️ Architecture
 
@@ -303,8 +306,9 @@ This project is part of the Google Summer of Code program. Please refer to the L
 
 ## 🔗 Related Repositories
 
-- [Conversion Module](https://github.com/simarjotsingh/ogv-conversation-package)
-- [Viewer Module](https://github.com/simarjotsingh/ogv-viewer-package)
+- [Conversion Module](https://github.com/simarjot0032/ogv-conversation-package)
+- [Viewer Module](https://github.com/simarjot0032/ogv-viewer-package)
+
 
 ## 🆘 Troubleshooting
 

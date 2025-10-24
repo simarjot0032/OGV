@@ -1,35 +1,230 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+**OGV Backend**
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is the backend service for the Online Geometry Viewer (OGV) project. It handles file uploads, 3D model conversion using BRL-CAD, and provides REST API endpoints for the frontend application.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+> 📖 **For complete setup instructions, environment configuration, and database setup, see the [main README](../README.md)**
 
-## Description
+### Key Features:
+- **File Upload & Storage**: Handles 3D model file uploads with Cloudinary integration
+- **Geometry Conversion**: Converts CAD files to web-compatible formats using BRL-CAD
+- **Database Management**: PostgreSQL database with Prisma ORM
+- **API Endpoints**: RESTful API for model management and conversion
+- **File Expiration**: Automatic cleanup of expired files
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## API Endpoints
+
+### Model Management
+- `GET /model/` - Get all uploaded models
+- `GET /model/:id` - Get specific model by ID
+
+### File Upload & Conversion
+- `POST /upload/model/` - Upload 3D model files
+- `POST /converter/upload` - Convert uploaded files
+
+
+
+## Development Rules & Guidelines
+
+### Code Standards:
+- **TypeScript**: Use TypeScript for all services, controllers, and DTOs
+- **NestJS Patterns**: Follow NestJS decorators and dependency injection
+- **Error Handling**: Use proper HTTP exceptions and status codes
+- **Validation**: Use class-validator for DTO validation
+- **Naming**: Use camelCase for methods, PascalCase for classes
+- **File Organization**: Follow NestJS module structure and naming conventions
+- **Environment Variables**: Use proper environment configuration with validation
+- **Utilities**: Create reusable utility functions in `/src/utils/`
+- **Types**: Define proper TypeScript interfaces and types
+- **Constants**: Use constants for magic numbers and strings
+
+### API Design:
+- **RESTful**: Follow REST conventions for endpoints
+- **Response Format**: Consistent JSON response structure
+- **Error Responses**: Standardized error response format
+- **Status Codes**: Use appropriate HTTP status codes
+- **Documentation**: Document all endpoints and DTOs
+
+### Database Guidelines:
+- **Prisma**: Use Prisma for all database operations
+- **Migrations**: Create migrations for schema changes
+- **Relations**: Define proper model relationships
+- **Validation**: Validate data before database operations
+
+### File Handling:
+- **Upload Validation**: Validate file types and sizes
+- **Storage**: Use Cloudinary for file storage
+- **Cleanup**: Implement proper file cleanup for expired files
+- **Security**: Validate and sanitize uploaded files
+
+### NestJS Development Guidelines:
+- **Module Structure**: Organize code into logical modules (controllers, services, DTOs)
+- **Dependency Injection**: Use constructor injection for services
+- **Decorators**: Use appropriate decorators (@Controller, @Service, @Injectable)
+- **Guards**: Implement authentication and authorization guards
+- **Interceptors**: Use interceptors for logging, transformation, and caching
+- **Pipes**: Use pipes for validation and transformation
+- **Filters**: Implement exception filters for error handling
+
+### Database Development Guidelines:
+- **Prisma Schema**: Keep schema organized and well-documented
+- **Migrations**: Create migrations for all schema changes
+- **Relations**: Define proper model relationships
+- **Queries**: Use Prisma client for all database operations
+- **Transactions**: Use transactions for complex operations
+- **Indexing**: Add proper database indexes for performance
+
+### API Response Standards:
+- **Success Response**: Consistent structure for successful responses
+- **Error Response**: Standardized error response format
+- **Status Codes**: Use appropriate HTTP status codes
+- **Pagination**: Implement pagination for list endpoints
+- **Filtering**: Add filtering and sorting capabilities
+- **Documentation**: Document all endpoints with Swagger/OpenAPI
+
+#### Example API Response Structure:
+```typescript
+// Success Response
+{
+  success: true,
+  data: T,
+  message?: string,
+  meta?: {
+    pagination?: PaginationMeta,
+    timestamp: string
+  }
+}
+
+// Error Response
+{
+  success: false,
+  error: string,
+  statusCode: number,
+  timestamp: string,
+  path: string
+}
+```
+
+#### Example Service Structure:
+```typescript
+// service.ts
+@Injectable()
+export class ModelService {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly storageService: StorageService
+  ) {}
+
+  async getAllUploads(): Promise<ApiResponse<UploadModel[]>> {
+    try {
+      const models = await this.prisma.uploadModel.findMany({
+        where: { status: 'active' },
+        orderBy: { createdAt: 'desc' }
+      });
+      
+      return {
+        success: true,
+        data: models
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: 'Failed to fetch models'
+      };
+    }
+  }
+}
+```
+
+#### Example Controller Structure:
+```typescript
+// controller.ts
+@Controller('model')
+export class ModelController {
+  constructor(private readonly modelService: ModelService) {}
+
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  async getAllUploads() {
+    const result = await this.modelService.getAllUploads();
+    
+    if (!result.success) {
+      throw new HttpException(
+        { success: false, error: result.error },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+    
+    return result;
+  }
+}
+```
+
+#### Example DTO Structure:
+```typescript
+// dto.ts
+export class CreateModelDto {
+  @IsString()
+  @IsNotEmpty()
+  title: string;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
+
+  @IsString()
+  @IsIn(['active', 'inactive'])
+  status: string;
+
+  @IsInt()
+  @Min(1)
+  @Max(365)
+  expiresIn: number;
+}
+```
+
+### Backend Development Workflow:
+1. **Create Module**: Start with module structure (controller, service, DTOs)
+2. **Define DTOs**: Create Data Transfer Objects with validation
+3. **Implement Service**: Add business logic in service layer
+4. **Create Controller**: Implement API endpoints in controller
+5. **Add Validation**: Use class-validator for input validation
+6. **Error Handling**: Implement proper error handling and HTTP exceptions
+7. **Documentation**: Document endpoints and add Swagger decorators
+
+### Environment Configuration:
+- **Environment Variables**: Use proper environment configuration
+- **Validation**: Validate environment variables on startup
+- **Secrets**: Never commit secrets to version control
+- **Configuration**: Use configuration service
+
+### Utilities Guidelines:
+- **Utility Functions**: Create reusable utility functions in `/src/utils/`
+- **Pure Functions**: Keep utilities pure (no side effects)
+- **TypeScript**: Use proper TypeScript typing for all utilities
+- **Documentation**: Document utility functions with JSDoc if the function is too complex
+- **Naming**: Use descriptive names for utility functions
+
+### Types Guidelines:
+- **Interface Definition**: Define clear interfaces for all data structures
+- **Type Exports**: Export types from `/src/types/index.ts`
+- **Generic Types**: Use generics for reusable type definitions
+- **Union Types**: Use union types for variant data
+- **Type Guards**: Create type guard functions for runtime type checking
+
+### Constants Guidelines:
+- **Magic Numbers**: Replace magic numbers with named constants
+- **String Constants**: Use constants for repeated strings
+- **Configuration**: Use constants for configuration values
+- **Enums**: Use enums for related constants
+- **Export**: Export constants from `/src/constants/index.ts`
 
 ## Project setup
 
 ```bash
 $ yarn install
 ```
+
+> 📖 **For complete setup instructions, environment configuration, and database setup, see the [main README](../README.md)**
 
 ## Compile and run the project
 
@@ -44,55 +239,6 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
-## Run tests
 
-```bash
-# unit tests
-$ yarn run test
 
-# e2e tests
-$ yarn run test:e2e
 
-# test coverage
-$ yarn run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
