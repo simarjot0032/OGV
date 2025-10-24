@@ -453,7 +453,7 @@
   resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.2.9.tgz#d229a7b7f9dac167a156992ef23c7f023653f53b"
   integrity sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==
 
-"@react-three/drei@^10.6.1":
+"@react-three/drei@^10.7.0":
   version "10.7.6"
   resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-10.7.6.tgz#2b00683dfb95a2b5c7fe462701aac89ddd71c7dd"
   integrity sha512-ZSFwRlRaa4zjtB7yHO6Q9xQGuyDCzE7whXBhum92JslcMRC3aouivp0rAzszcVymIoJx6PXmibyP+xr+zKdwLg==
@@ -2449,11 +2449,11 @@ object.values@^1.1.6, object.values@^1.2.1:
     define-properties "^1.2.1"
     es-object-atoms "^1.0.0"
 
-"ogv-viewer-package@https://github.com/simarjot0032/ogv-viewer-package.git":
+ogv-viewer-package@./ogvg.tgz:
   version "1.0.0"
-  resolved "https://github.com/simarjot0032/ogv-viewer-package.git#89276be0526c2e773a8e7556d6672e448ed40fcd"
+  resolved "./ogvg.tgz#9ac714a8a59a516ac4fe0d6a0c67136b6a402d7f"
   dependencies:
-    "@react-three/drei" "^10.6.1"
+    "@react-three/drei" "^10.7.0"
     "@react-three/fiber" "^9.3.0"
     three "0.179.1"
 
@@ -3049,15 +3049,10 @@ three-stdlib@^2.35.6:
     fflate "^0.6.9"
     potpack "^1.0.1"
 
-three@0.179.1, three@^0.179.1:
+three@0.179.1, three@^0.170.0, three@^0.179.1:
   version "0.179.1"
   resolved "https://registry.yarnpkg.com/three/-/three-0.179.1.tgz#6c0b43e046eaad0f42b163143517a44ae44ed446"
   integrity sha512-5y/elSIQbrvKOISxpwXCR4sQqHtGiOI+MKLc3SsBdDXA2hz3Mdp3X59aUp8DyybMa34aeBwbFTpdoLJaUDEWSw==
-
-three@^0.170.0:
-  version "0.170.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.170.0.tgz#6087f97aab79e9e9312f9c89fcef6808642dfbb7"
-  integrity sha512-FQK+LEpYc0fBD+J8g6oSEyyNzjp+Q7Ks1C568WWaoMRLW+TkNNWmenWeGgJjV105Gd+p/2ql1ZcjYvNiPZBhuQ==
 
 tinyglobby@^0.2.13:
   version "0.2.15"
