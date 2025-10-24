@@ -38,6 +38,9 @@ This project consists of two main modules:
 ### For macOS Users
 ⚠️ **Important**: On macOS, you must use Docker for the GCV (Geometry Conversion) module as BRL-CAD is not natively available for macOS.
 
+### BRL-CAD Package
+The project uses BRL-CAD for geometry conversion. For more information about BRL-CAD and installation, see the [BRL-CAD repository](https://github.com/BRL-CAD/brlcad).
+
 ## 🛠️ Installation & Setup
 
 ### 1. Clone the Repository

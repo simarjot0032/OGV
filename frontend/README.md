@@ -285,4 +285,3 @@ yarn dev --port 3001
 ```
 
 > 📖 **For complete setup instructions, environment configuration, and database setup, see the [main README](../README.md)**
-
