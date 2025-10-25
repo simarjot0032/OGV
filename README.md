@@ -58,7 +58,7 @@ cd backend
 yarn install
 
 # Set up environment variables
-cp .env.example .env
+cp .env.sample .env
 # Edit .env with your configuration
 
 # Create Docker Compose configuration (since it's in .gitignore)
