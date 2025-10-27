@@ -170,10 +170,15 @@ export const FileUpload = ({ setFileInformation, fileInformation }: Props) => {
         {fileInformation.file && !isDragActive && (
           <div className="file-upload-dropzone">
             <FileIcon />
-            <Paragraph
-              paragraph={fileInformation.file.name}
-              className="file-upload-label-text"
-            />
+            <div
+              title={fileInformation.file.name}
+              className="file-name-container"
+            >
+              <Paragraph
+                paragraph={fileInformation.file.name}
+                className="file-upload-label-text file-name-truncated"
+              />
+            </div>
             <Paragraph
               paragraph={'Uploaded Successfully'}
               className="file-upload-label-subtext"

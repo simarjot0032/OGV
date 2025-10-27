@@ -22,8 +22,29 @@
   &-icon {
     @include flex($alignItems: center, $justifyContent: center);
   }
+  
+  .file-name-container {
+    width: 100%;
+    @include flex($alignItems: center, $justifyContent: center);
+  }
   &-label-text {
     @include font($fontSize: 1.5rem);
+    
+    &.file-name-truncated {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      @media (max-width: 480px) {
+        max-width: 200px;
+      }
+      @media (min-width: 481px) and (max-width: 768px) {
+        max-width: 300px;
+      }
+      @media (min-width: 769px) {
+        max-width: 400px;
+      }
+    }
   }
   &-label-subtext {
     @include font($fontSize: 1rem, $fontWeight: 400);
