@@ -11,7 +11,6 @@ export class ConverterService {
     const fileRequest: FileRequest = {
       filePath: file.path,
       fileName: file.originalname,
-      fileMimeType: file.mimetype,
       outputFormat: outputFormats,
       outputPath: StorageConfig.CONVERTER_OUTPUT_PATH,
     };
