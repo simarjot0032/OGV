@@ -1,7 +1,6 @@
 import { diskStorage, FileFilterCallback } from 'multer';
 import { InputFormats, ValidImageFormats } from 'src/constants';
 import * as fs from 'fs';
-import { MIME_Types, ValidImageMimeTypes } from 'src/constants/ValidMIME';
 import { StorageConfig } from 'src/config/storage.config';
 
 export const multerConfig = {
@@ -35,16 +34,10 @@ export const multerConfig = {
 
   fileFilter: (req: Request, file: Express.Multer.File, callback: FileFilterCallback) => {
     const ext: string = file.originalname.split('.').pop()?.toLowerCase() || '';
-    const fileMimeType: string = file.mimetype.toLowerCase();
-
     const isValidModelFormat = InputFormats.includes(ext);
-    const expectedModelMimeType = MIME_Types[ext];
-    const isValidModelMIME = expectedModelMimeType ? fileMimeType === expectedModelMimeType : false;
-
     const isValidImageFormat = ValidImageFormats.includes(ext);
-    const isValidImageMIME = ValidImageMimeTypes.includes(fileMimeType);
 
-    if ((isValidModelFormat && isValidModelMIME) || (isValidImageFormat && isValidImageMIME)) {
+    if (isValidModelFormat || isValidImageFormat) {
       return callback(null, true);
     }
 

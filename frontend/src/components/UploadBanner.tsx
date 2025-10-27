@@ -37,12 +37,10 @@ export const UploadBanner = ({ fileInformation }: Props) => {
         const formData = new FormData();
         if (fileInformation.file) {
           formData.append('file', fileInformation.file);
-          console.log('File uploaded:', fileInformation.file);
         }
 
         if (fileInformation.thumbnail) {
           formData.append('thumbnailImage', fileInformation.thumbnail);
-          console.log('Thumbnail uploaded:', fileInformation.thumbnail);
         }
 
         formData.append('title', fileInformation.title);
@@ -62,11 +60,9 @@ export const UploadBanner = ({ fileInformation }: Props) => {
             if (result.success) {
               setUploadId(result.data.id);
               toast.success('File uploaded successfully!');
-              console.log('Upload successful:', result);
               setIsCompleted(true);
             } else {
               toast.error('Upload failed: ' + result.error);
-              console.error('Upload failed:', result);
               setIsError(true);
               setError('Upload failed');
             }

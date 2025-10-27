@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { UploadRequestDto } from './dto/UploadRequest.dto';
 import { createError400 } from 'src/utils/Error400';
 import { InputFormats, ValidImageFormats } from 'src/constants';
-import { MIME_Types, ValidImageMimeTypes } from 'src/constants/ValidMIME';
 import cloudinary from './config/cloudinary.config';
 import { ConverterService } from 'src/converter/converter.service';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -54,22 +53,13 @@ export class UploadService {
     }
 
     const fileExt = request.file.originalname.split('.').pop()?.toLowerCase() || '';
-    const fileMimeType = request.file.mimetype.toLowerCase();
-
     const isValidFileFormat = InputFormats.includes(fileExt);
-    const expectedFileMimeType = MIME_Types[fileExt];
-    const isValidFileMIME = expectedFileMimeType ? fileMimeType === expectedFileMimeType : false;
-
-    if (!isValidFileFormat || !isValidFileMIME) {
+    if (!isValidFileFormat) {
       return createError400(`Invalid file format`);
     }
     const thumbnailExt = request.thumbnailImage.originalname.split('.').pop()?.toLowerCase() || '';
-    const thumbnailMimeType = request.thumbnailImage.mimetype.toLowerCase();
-
     const isValidThumbnailFormat = ValidImageFormats.includes(thumbnailExt);
-    const isValidThumbnailMIME = ValidImageMimeTypes.includes(thumbnailMimeType);
-
-    if (!isValidThumbnailFormat || !isValidThumbnailMIME) {
+    if (!isValidThumbnailFormat) {
       return createError400(`Invalid thumbnail format`);
     }
 
@@ -105,7 +95,8 @@ export class UploadService {
       console.error(`Failed to delete file ${publicId} from ${folder}:`, error);
       return {
         success: false,
-        result: error,
+        result: 'Failed to delete file from cloudinary',
+        details: error instanceof Error ? error.message : 'Unknown error',
       };
     }
   }

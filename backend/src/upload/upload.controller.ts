@@ -1,18 +1,9 @@
-import {
-  Body,
-  Controller,
-  Post,
-  UploadedFiles,
-  UseGuards,
-  UseInterceptors,
-  Req,
-} from '@nestjs/common';
+import { Body, Controller, Post, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './upload.service';
 import { UploadRequestDto } from './dto/UploadRequest.dto';
 import { multerConfig } from './config/multer.config';
 import { ThrottlerGuard } from '@nestjs/throttler';
-import { Request } from 'express';
 import { FileURL } from 'src/types/FileURL';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
@@ -46,7 +37,14 @@ export class UploadController {
 
       await this.uploadService.cleanupLocalFiles();
     } catch (error) {
-      console.error('Failed to cleanup uploaded files:', error);
+      throw new HttpException(
+        {
+          success: false,
+          error: 'Failed to cleanup uploaded files',
+          details: error instanceof Error ? error.message : 'Unknown error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
   }
 
@@ -61,8 +59,7 @@ export class UploadController {
   @UseInterceptors(AnyFilesInterceptor(multerConfig))
   async uploadModel(
     @UploadedFiles() files: Express.Multer.File[],
-    @Body() body: Omit<UploadRequestDto, 'file' | 'thumbnailImage'>,
-    @Req() req: Request
+    @Body() body: Omit<UploadRequestDto, 'file' | 'thumbnailImage'>
   ) {
     const fileFormat = files[0].originalname.split('.').pop();
     const file = files.find((f) => f.fieldname === 'file');
@@ -78,8 +75,6 @@ export class UploadController {
             availableFieldnames: files.map((f) => f.fieldname),
             fileFound: !!file,
             thumbnailFound: !!thumbnailImage,
-            requestHeaders: Object.keys(req.headers),
-            contentType: req.headers['content-type'],
           },
         },
         HttpStatus.BAD_REQUEST
@@ -154,7 +149,6 @@ export class UploadController {
           );
         }
       } catch (saveError) {
-        console.error('Database save error:', saveError);
         await this.cleanupUploadedFiles(result.URL);
         throw new HttpException(
           {

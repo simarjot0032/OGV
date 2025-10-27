@@ -18,7 +18,7 @@ export const Uploading: React.FC<UploadingProps> = ({
   isUploading,
   isCompleted,
   isError,
-  error,
+  error = 'Upload Failed. Please try again.',
   fileName = 'File Name',
   onViewFile,
   onCopyLink,
@@ -44,8 +44,9 @@ export const Uploading: React.FC<UploadingProps> = ({
               className={`status-text ${isCompleted ? 'completed' : ''} ${isError ? 'error' : ''}`}
             >
               {isUploading && !isError && !isCompleted && 'uploading...'}
-              {isCompleted && 'Upload Complete!'}
-              {isError && !isUploading && !isCompleted && `Error: ${error}`}
+              {isCompleted && !isError && 'Upload Complete!'}
+              {isCompleted && isError && error}
+              {isError && !isUploading && !isCompleted && error}
             </span>
           </div>
 
@@ -57,7 +58,7 @@ export const Uploading: React.FC<UploadingProps> = ({
             {isCompleted &&
               !isUploading &&
               'Your file has been successfully uploaded and converted.'}
-            {isError && `Upload failed: ${error}`}
+            {isError && error}
           </p>
         </div>
 

@@ -32,7 +32,7 @@
     "class-validator": "^0.14.2",
     "cloudinary": "^2.7.0",
     "multer-storage-cloudinary": "^4.0.0",
-    "ogv-conversation-package": "https://github.com/simarjot0032/gcv-conversion-module.git",
+    "ogv-conversation-package": "git+https://github.com/simarjot0032/gcv-conversion-module.git#fe4eb082e9322411f4ab8a54acdc5a68914a6ac9",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
