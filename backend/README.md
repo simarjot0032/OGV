@@ -2,6 +2,69 @@
 
 This is the backend service for the Online Geometry Viewer (OGV) project. It handles file uploads, 3D model conversion using BRL-CAD, and provides REST API endpoints for the frontend application.
 
+## Table of Contents
+  - [Install dependencies](#install-dependencies)
+  - [Environment variables](#environment-variables)
+  - [Database (Prisma + Postgres)](#database-prisma--postgres)
+  - [Run the backend](#run-the-backend)
+- [API Endpoints](#api-endpoints)
+- [Development Rules & Guidelines](#development-rules--guidelines)
+- [Project setup (existing)](#project-setup)
+- [Compile and run the project](#compile-and-run-the-project)
+
+### Install dependencies
+
+```bash
+cd backend
+yarn install
+```
+
+### Environment variables
+
+```bash
+cd backend
+cp .env.sample .env
+```
+
+At minimum, set:
+
+- `DATABASE_URL`
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
+
+Sample `.env` keys (from `.env.sample`):
+- `DATABASE_URL` - Postgres connection string
+- `CLOUDINARY_CLOUD_NAME` - Cloudinary account name
+- `CLOUDINARY_API_KEY` - Cloudinary API key
+- `CLOUDINARY_API_SECRET` - Cloudinary API secret
+- `UPLOAD_BASE_PATH` - Base storage directory for uploads
+- `UPLOAD_API_PATH` - Public API path for uploaded files
+- `RAW_FILES_PATH` - Local path for raw uploaded files
+- `CONVERTED_TO_OBJ_PATH` - Local path for converted OBJ files
+- `THUMBNAIL_PATH` - Local path for generated thumbnails
+- `CONVERSION_API_PATH` - Public API path for converted files
+- `CONVERTER_INPUT_PATH` - Local path used as converter input
+- `CONVERTER_OUTPUT_PATH` - Local path used as converter output
+- `TEMP_FILES_PATH` - Local path for temporary files
+
+### Database (Prisma + Postgres)
+
+With Postgres running and `DATABASE_URL` configured:
+
+```bash
+cd backend
+npx prisma migrate dev
+npx prisma generate
+```
+
+### Run the backend
+
+```bash
+cd backend
+yarn start:dev
+```
+
 > 📖 **For complete setup instructions, environment configuration, and database setup, see the [main README](../README.md)**
 
 ### Key Features:

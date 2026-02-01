@@ -1,7 +1,7 @@
 'use client';
 import { Logo } from '@components/Logo';
 import { HamburgerRightIcon } from '@icons/HamburgerRight.icon';
-import { LinksHomeData } from '@/data/LinksHomeData';
+import { LINKS_HOME_DATA } from '@/data/LinksHomeData';
 import Link from 'next/link';
 import { useState } from 'react';
 import { PrimaryButton } from './common';
@@ -26,7 +26,7 @@ export const NavbarHome = () => {
           className="navbar-home-hamburger-icon"
         />
         <div className={`navbar-home-right-menu ${isMenuOpen ? 'active' : ''}`}>
-          {LinksHomeData.map((item) => (
+          {LINKS_HOME_DATA.map((item) => (
             <Link
               key={item.label}
               href={item.href}

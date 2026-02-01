@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import { Paragraph } from './common';
 import { FileIcon } from '@icons/File.icon';
 import { FileInformationData } from '@app-types';
-import { ModelCategory } from '@data/ModelCategory';
+import { MODEL_CATEGORY } from '@data';
 
 interface Props {
   fileInformation: FileInformationData;
@@ -105,7 +105,7 @@ export const AdditionalFileInformation = ({
                   })
                 }
               >
-                {ModelCategory.map((category) => (
+                {MODEL_CATEGORY.map((category) => (
                   <option
                     key={category.optionValue}
                     value={category.optionValue}

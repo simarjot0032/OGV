@@ -24,13 +24,12 @@ const eslintConfig = [
         project: './tsconfig.json',
       },
     },
-          rules: {
-        '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/no-floating-promises': 'warn',
-        '@typescript-eslint/no-unsafe-argument': 'warn',
-        'react/no-unescaped-entities': 'off',
-        '@next/next/no-img-element': 'off',
-        'no-unused-vars': 'error',
+     rules: {
+      '@typescript-eslint/no-floating-promises': 'warn',
+      '@typescript-eslint/no-unsafe-argument': 'warn',
+      'react/no-unescaped-entities': 'off',
+      '@next/next/no-img-element': 'off',
+      'no-unused-vars': 'error',
       'no-unused-vars': 'off',
       'unused-imports/no-unused-imports': 'error',
       'unused-imports/no-unused-vars': [

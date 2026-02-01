@@ -1,9 +1,9 @@
-interface FeatureData {
+interface FEATURE_DATA {
   title: string;
   description: string;
 }
 
-export const FeatureData: FeatureData[] = [
+export const FEATURE_DATA: FEATURE_DATA[] = [
   {
     title: 'Instant 3D File Conversion',
     description:

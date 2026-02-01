@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import React from 'react';
-import { SideBarDataList } from '@data/SideBarData';
+import { SIDE_BAR_DATA } from '@data';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -15,7 +15,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
         className={`sidebar-large ${isOpen ? 'sidebar-container-open' : 'sidebar-container-closed'}`}
       >
         <div className="sidebar-links">
-          {SideBarDataList.map((item, index) => (
+          {SIDE_BAR_DATA.map((item, index) => (
             <Link
               href={item.link}
               key={index}

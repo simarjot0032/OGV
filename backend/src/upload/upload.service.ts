@@ -20,36 +20,21 @@ export class UploadService {
   ) {}
 
   validateRequest(request: UploadRequestDto) {
-    if (!request.file) {
-      return createError400('File is required');
-    }
+    const requiredFields: Array<[keyof UploadRequestDto, string]> = [
+      ['file', 'File'],
+      ['thumbnailImage', 'Thumbnail image'],
+      ['title', 'Title'],
+      ['description', 'Description'],
+      ['category', 'Category'],
+      ['license', 'License'],
+      ['expiresIn', 'Expires in'],
+      ['userIP', 'User IP'],
+    ];
 
-    if (!request.thumbnailImage) {
-      return createError400('Thumbnail image is required');
-    }
-
-    if (!request.title) {
-      return createError400('Title is required');
-    }
-
-    if (!request.description) {
-      return createError400('Description is required');
-    }
-
-    if (!request.category) {
-      return createError400('Category is required');
-    }
-
-    if (!request.license) {
-      return createError400('License is required');
-    }
-
-    if (!request.expiresIn) {
-      return createError400('Expires in is required');
-    }
-
-    if (!request.userIP) {
-      return createError400('User IP is required');
+    for (const [field, label] of requiredFields) {
+      if (!request[field]) {
+        return createError400(`${label} is required`);
+      }
     }
 
     const fileExt = request.file.originalname.split('.').pop()?.toLowerCase() || '';

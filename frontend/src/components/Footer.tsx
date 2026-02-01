@@ -1,8 +1,7 @@
 'use client';
 import { Logo, Paragraph } from '@components';
 import Link from 'next/link';
-import { LinksHomeData } from '@/data/LinksHomeData';
-import { FooterData } from '@/data/Footer';
+import { LINKS_HOME_DATA, FOOTER_DATA } from '@data';
 
 export default function Footer() {
   return (
@@ -13,7 +12,7 @@ export default function Footer() {
             <Logo />
           </div>
           <div className="footer-links">
-            {LinksHomeData.map((item) => (
+            {LINKS_HOME_DATA.map((item) => (
               <Link href={item.href} key={item.label} className="footer-link">
                 {item.label}
               </Link>
@@ -21,7 +20,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="footer-right">
-          {FooterData.map((social) => (
+          {FOOTER_DATA.map((social) => (
             <Link
               href={social.href}
               key={social.label}

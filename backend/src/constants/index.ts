@@ -1,1 +1,1 @@
-export * from './formarts';
+export * from './formats';

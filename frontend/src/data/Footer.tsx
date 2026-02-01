@@ -6,13 +6,13 @@ import {
   YoutubeIcon,
 } from '@icons';
 
-interface FooterDataItem {
+interface FOOTER_DATA_ITEM {
   icon: React.ReactNode;
   label: string;
   href: string;
 }
 
-export const FooterData: FooterDataItem[] = [
+export const FOOTER_DATA: FOOTER_DATA_ITEM[] = [
   {
     icon: <FacebookIcon />,
     label: 'Facebook',

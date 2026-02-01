@@ -4,6 +4,51 @@ This is the frontend application for the Online Geometry Viewer (OGV) project. I
 
 > 📖 **For complete setup instructions, API documentation, and project overview, see the [main README](../README.md)**
 
+## Table of Contents
+- [Project Setup Guide](#project-setup-guide)
+- [Key Features](#key-features)
+- [Pages & Routes](#pages--routes)
+- [Key Components](#key-components)
+- [Development Rules & Guidelines](#development-rules--guidelines)
+- [Getting Started](#getting-started)
+
+## Project Setup Guide
+
+### Prerequisites
+- Node.js (LTS recommended)
+- Yarn package manager
+
+### Install Dependencies
+```bash
+yarn install
+```
+
+### Sample Environment File
+```bash
+cp .env.sample .env
+```
+
+Required keys in `frontend/.env`:
+- `NEXT_PUBLIC_BACKEND_URL` - Backend converter endpoint (e.g. `http://localhost:3000/converter/upload`)
+- `NEXT_PUBLIC_UPLOAD_URL` - Upload API endpoint (e.g. `http://localhost:3000/upload/model/`)
+- `NEXT_PUBLIC_GET_ALL_MODELS_URL` - Models listing endpoint (e.g. `http://localhost:3000/model/`)
+
+### Environment Configuration
+- Create a `.env` file in `frontend/` if your local setup requires it.
+- Add any required frontend environment variables (see the main README for full configuration).
+
+### Run the App
+```bash
+# development
+yarn dev --port 3001
+```
+
+### Build and Start (Production)
+```bash
+yarn build
+yarn start --port 3001
+```
+
 ### Key Features:
 - **3D Model Viewer**: Interactive 3D model visualization using Three.js
 - **File Upload Interface**: Drag-and-drop file upload with progress tracking

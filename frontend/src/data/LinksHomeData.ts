@@ -1,9 +1,9 @@
-interface LinksHomeDataItem {
+interface LINKS_HOME_DATA_ITEM {
   label: string;
   href: string;
 }
 
-export const LinksHomeData: LinksHomeDataItem[] = [
+export const LINKS_HOME_DATA: LINKS_HOME_DATA_ITEM[] = [
   {
     label: 'Home',
     href: '#home',

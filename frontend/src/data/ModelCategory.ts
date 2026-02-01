@@ -1,4 +1,4 @@
-export const ModelCategory = [
+export const MODEL_CATEGORY = [
   {
     optionName: 'Select Category',
     optionValue: '',

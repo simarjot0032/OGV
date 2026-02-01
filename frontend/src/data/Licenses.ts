@@ -1,4 +1,4 @@
-export const Licenses = [
+export const LICENSES = [
   {
     optionName: 'Select License',
     optionValue: '',

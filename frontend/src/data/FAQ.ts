@@ -3,7 +3,7 @@ interface FAQ {
   answer: string;
 }
 
-export const FAQData: FAQ[] = [
+export const FAQ_DATA: FAQ[] = [
   {
     question: 'What file formats does OGV support?',
     answer: `There are multiple file formats that OGV supports. Input Formats: .obj, .ply, .vrml, .3mf, .asc, .x, .x3d, .3ds, .fbx, .assbin, .g.

@@ -3,7 +3,7 @@ import { Paragraph } from './common';
 import { FileInformationData } from '@app-types';
 import { FileExipryCalculate } from '@utils/FileExipryCalculate';
 import { FileSize } from '@utils/FileSize';
-import { Licenses } from '@data/Licenses';
+import { LICENSES } from '@data/Licenses';
 
 interface Props {
   fileInformation: FileInformationData;
@@ -53,7 +53,7 @@ export const FileInformation = ({
               value={fileInformation.license}
               onChange={handleLicenseChange}
             >
-              {Licenses.map((license) => (
+              {LICENSES.map((license) => (
                 <option key={license.optionValue} value={license.optionValue}>
                   {license.optionName}
                 </option>
